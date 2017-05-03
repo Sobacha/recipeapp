@@ -3,9 +3,11 @@ class FoodsController < ApplicationController
     @foods = Food.all
   end
 
-  #def show
-  #  @food = Food.find(params[:id])
-  #end
+  # def show
+  #   @food = Food.find(params[:id])
+  #   @recipes = Recipe.where("ingredients like ?", "%#{@food.name}%")
+  #   #redirect_to :controller => 'recipe', :action => 'selected_recipes', :param => @recipes
+  # end
 
   def new
     @food = Food.new

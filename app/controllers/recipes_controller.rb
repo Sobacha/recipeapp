@@ -43,9 +43,16 @@ class RecipesController < ApplicationController
     redirect_to recipes_path
   end
 
+  def search
+     @food = Food.find(params[:id])
+     @recipes = Recipe.where("ingredients like ?", "%#{@food.name}%")
+  end
+
   private
     def recipe_params
       params.require(:recipe).permit(:category, :title, :ingredients, :direction, :url)
     end
+
+
 
 end

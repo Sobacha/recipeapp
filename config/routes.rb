@@ -1,12 +1,11 @@
 Rails.application.routes.draw do
 
-  resources :recipes do
-    resources :foods, except: :show
-  end
+  resources :recipes
 
-  resources :foods do
-    resources :recipes
-  end
+  resources :foods, except: :show
+
+#  get 'recipes/search/:id', to: 'recipes#search'
+  get 'recipes/search/:name', to: 'recipes#search'
 
   root 'welcome#index'
 end

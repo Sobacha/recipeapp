@@ -19,7 +19,8 @@
       <td><%= food.purchase_date %></td>
       <td><%= food.expiration_date %></td>
       <td><%= food.quantity %></td>
-      <%# <td><%= link_to 'Show', recipe_path(recipe) </td> %>
+      <td><%= link_to 'Recipes with this',
+              controller: 'recipes', action: 'search', id: food.id, name: food.name %></td>
       <td><%= link_to 'Edit', edit_food_path(food) %></td>
       <td><%= link_to 'Destroy', food_path(food),
               method: :delete,
@@ -27,3 +28,5 @@
     </tr>
   <% end %>
 </table>
+
+<%= link_to 'Home', root_path %>
