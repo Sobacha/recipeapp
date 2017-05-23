@@ -6,7 +6,6 @@ one:
   purchase_date: 2017-05-01
   expiration_date: 2017-05-01
   quantity: 1
-  recipes: one
 
 two:
   category: MyString
@@ -14,4 +13,3 @@ two:
   purchase_date: 2017-05-01
   expiration_date: 2017-05-01
   quantity: 1
-  recipes: two
