@@ -7,9 +7,10 @@ class CreateRecipes < ActiveRecord::Migration[5.0]
       t.text :ingredients
       t.text :direction
       t.text :url
-      #t.references :foods, foreign_key: true
+      t.references :user, foreign_key: true
 
       t.timestamps
     end
+    add_index :recipes, [:user_id, :created_at]
   end
 end
