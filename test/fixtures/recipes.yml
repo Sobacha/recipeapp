@@ -4,8 +4,18 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-# column: value
+one:
+  category: Fish
+  title: Oven baled salmon
+  ingredients: Salmon
+  direction: 1. Preheat the oven. 2. Bake salmon for 20 minutes.
+  url:
+  user_id: users(:one).id
+
+two:
+  category: Meat
+  title: Hamburg
+  ingredients: Ground beef, Ground pork, Nutmeg, Salt, Pepper, Egg, Panko
+  direction: 1. Mix ingredients well. 2. Shape in oval. 3. Heat pan. 4. Fry.
+  url:
+  user_id: users(:two).id
