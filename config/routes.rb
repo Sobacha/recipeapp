@@ -14,5 +14,5 @@ Rails.application.routes.draw do
 
   get 'recipes/search/:name', to: 'recipes#search'
 
-  root 'welcome#index'
+  root 'welcome#home'
 end
