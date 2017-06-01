@@ -1,2 +1,4 @@
-<%= @user.name %>, <%= @user.email %>
-<%= link_to "Log out", logout_path, method: :delete %>
+<li><%= render 'shared/header' %></li>
+<li><%= current_user.name %>, <%= current_user.email %></li>
+<li><%= link_to "Log out", logout_path, method: :delete %></li>
+<li><%= link_to "Home", root_url, controller: 'welcome' %></li>

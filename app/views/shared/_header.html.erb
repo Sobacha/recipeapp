@@ -1,0 +1,4 @@
+<li><%= link_to "Profile", user_path(current_user.id) %></li>
+<li><%= link_to "My recipe", controller: 'recipes' %></li>
+<li><%= link_to "My food", controller: 'foods' %></li>
+<li><%= link_to "Log out", logout_path, method: :delete %></li>
