@@ -3,9 +3,12 @@
 To see recipes, click "My Recipes". To see food, click "My foods".
 </p>
 
-<% if logged_in? %>
+<!-- <% if logged_in? %>
   <%= render 'shared/header' %>
-<% else %>
+<% else %> -->
+<% if !logged_in? %>
   <li><%= link_to "Sign up now!", signup_path %></li>
   <li><%= link_to "Log in", login_path %></li>
 <% end %>
+
+<!-- <% end %> -->

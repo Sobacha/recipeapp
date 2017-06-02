@@ -1,5 +1,4 @@
 <%= render 'shared/flash_messages' %>
-<li><%= render 'shared/header' %></li>
 <li><%= current_user.name %>, <%= current_user.email %></li>
 <li><%= link_to "Edit info", edit_user_path(current_user) %></li>
 <li><%= link_to "Delete account", user_path, method: :delete, data: { confirm: "You sure?" } %></li>
