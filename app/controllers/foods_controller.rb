@@ -1,6 +1,6 @@
 class FoodsController < ApplicationController
   def index
-    @foods = Food.all
+    @foods = current_user.foods
   end
 
   # def show
@@ -19,6 +19,7 @@ class FoodsController < ApplicationController
 
   def create
     @food = Food.new(food_params)
+    @food.user_id = current_user.id
 
     if @food.save
       redirect_to action: "index"

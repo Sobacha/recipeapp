@@ -14,20 +14,22 @@
     <th colspan="2"></th>
   </tr>
 
-  <% @foods.each do |food| %>
-    <tr>
-      <td><%= food.category %></td>
-      <td><%= food.name %></td>
-      <td><%= food.purchase_date %></td>
-      <td><%= food.expiration_date %></td>
-      <td><%= food.quantity %></td>
-      <td><%= link_to 'Recipes with this',
-              controller: 'recipes', action: 'search', id: food.id, name: food.name %></td>
-      <td><%= link_to 'Edit', edit_food_path(food) %></td>
-      <td><%= link_to 'Destroy', food_path(food),
-              method: :delete,
-              data: { confirm: 'Are you sure?' } %></td>
-    </tr>
+  <% if @foods.any? %>
+    <% @foods.each do |food| %>
+      <tr>
+        <td><%= food.category %></td>
+        <td><%= food.name %></td>
+        <td><%= food.purchase_date %></td>
+        <td><%= food.expiration_date %></td>
+        <td><%= food.quantity %></td>
+        <td><%= link_to 'Recipes with this',
+                controller: 'recipes', action: 'search', id: food.id, name: food.name %></td>
+        <td><%= link_to 'Edit', edit_food_path(food) %></td>
+        <td><%= link_to 'Destroy', food_path(food),
+                method: :delete,
+                data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
   <% end %>
 </table>
 

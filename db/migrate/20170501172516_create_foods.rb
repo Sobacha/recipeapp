@@ -6,7 +6,7 @@ class CreateFoods < ActiveRecord::Migration[5.0]
       t.date :purchase_date
       t.date :expiration_date
       t.integer :quantity
-      #t.references :recipes, foreign_key: true
+      t.references :users, foreign_key: true
 
       t.timestamps
     end
