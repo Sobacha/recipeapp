@@ -1,15 +1,57 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  category: MyString
-  name: MyString
+  category: Fish
+  name: Salmon
   purchase_date: 2017-05-01
   expiration_date: 2017-05-01
   quantity: 1
+  user_id: users(:one).id
 
 two:
-  category: MyString
-  name: MyString
+  category: Meat
+  name: Ground beef
   purchase_date: 2017-05-01
   expiration_date: 2017-05-01
   quantity: 1
+  user_id: users(:one).id
+
+three:
+  category: Vegetable
+  name: Ginger
+  purchase_date: 2017-05-01
+  expiration_date: 2017-05-01
+  quantity: 1
+  user_id: users(:two).id
+
+four:
+  category: Meat
+  name: Lamb shank
+  purchase_date: 2017-05-01
+  expiration_date: 2017-05-01
+  quantity: 1
+  user_id: users(:two).id
+
+five:
+  category: Vegetable
+  name: Spinach
+  purchase_date: 2017-05-01
+  expiration_date: 2017-05-01
+  quantity: 1
+  user_id: users(:three).id
+
+six:
+  category: Beans
+  name: Tofu
+  purchase_date: 2017-05-01
+  expiration_date: 2017-05-01
+  quantity: 1
+  user_id: users(:three).id
+
+seven:
+  category: Fruit
+  name: Orange
+  purchase_date: 2017-05-01
+  expiration_date: 2017-05-01
+  quantity: 1
+  user_id: users(:three).id

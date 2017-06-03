@@ -19,3 +19,27 @@ two:
   direction: 1. Mix ingredients well. 2. Shape in oval. 3. Heat pan. 4. Fry.
   url:
   user_id: users(:two).id
+
+three:
+  category: Meat
+  title: Ginger pork
+  ingredients: Ginger, Pork, Sugar, Soy sauce
+  direction: 1. Mix ingredients well. 2. Let it rest for 30 minutes. 3. Heat pan. 4. Fry.
+  url:
+  user_id: users(:two).id
+
+four:
+  category: Tofu
+  title: Mabo Tofu
+  ingredients: Ground pork, Tofu, Corn starch, Tobanzyan, Umami powder, Miso
+  direction: 1. Stir fry pork and tobanzyan. 2. Put tofu and umami powder and miso and water. 3. Simmer for 30 minutes. 4. Add corn starch + water.
+  url:
+  user_id: users(:three).id
+
+five:
+  category: Meat
+  title: Hamburger
+  ingredients: Buns, Ground beef, Ground pork, Nutmeg, Salt, Pepper, Egg, Panko
+  direction: 1. Mix ingredients well. 2. Shape in oval. 3. Heat pan. 4. Fry. 5. Sand with buns.
+  url: google.com
+  user_id: users(:three).id

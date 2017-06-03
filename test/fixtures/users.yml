@@ -10,3 +10,9 @@ two:
   name: Im Second
   email: imsecond@imsecond.com
   password_digest: <%= User.digest('password') %>
+
+three:
+  id: 3
+  name: Im Third
+  email: imthird@imthird.com
+  password_digest: <%= User.digest('password') %>

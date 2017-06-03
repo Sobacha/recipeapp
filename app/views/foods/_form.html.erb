@@ -4,7 +4,7 @@
     <div id="error_explanation">
       <h2>
         <%= pluralize(@food.errors.count, "error") %> prohibited
-        this recipe from being saved:
+        this food from being saved:
       </h2>
       <ul>
         <% @food.errors.full_messages.each do |msg| %>
