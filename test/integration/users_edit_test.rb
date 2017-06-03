@@ -27,7 +27,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     post login_path, params: { session: { email: @user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    
+
     get edit_user_path(@user)
     assert_template 'users/edit'
     name  = "Foo Bar"
