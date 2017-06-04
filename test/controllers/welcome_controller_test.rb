@@ -7,4 +7,9 @@ class WelcomeControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "welcome routings" do
+    assert_routing({method: 'get', path: '/'},
+                   {controller: "welcome", action: "home"})
+  end
+
 end
