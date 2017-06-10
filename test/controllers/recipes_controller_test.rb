@@ -21,4 +21,97 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                    {controller: "recipes", action: "destroy", id: "1"})
   end
 
+  def setup
+    @user = users(:one)
+  end
+
+  test "Invalid recipe - No title(Empty input)" do
+    get login_path
+    post login_path, params: { session: { email: @user.email,
+                                          password: 'password' } }
+    assert is_logged_in?
+    assert_redirected_to @user
+    follow_redirect!
+    assert_template 'users/show'
+
+    get recipes_path
+    get new_recipe_path
+    assert_no_difference 'Recipe.count' do
+      post recipes_path, params: { recipe: { category: "Tofu",
+                                             title: "",
+                                             ingredients: "Tofu, Onion, Salt, Pepper",
+                                             direction: "1, Cut tofu and onion. 2, Stir fry. 3, Put salt and pepper for taste.",
+                                             url: "google.com",
+                                             user_id: @user.id } }
+    end
+    assert_template 'recipes/new'
+  end
+
+  test "Invalid recipe - No title(Only space input)" do
+    get login_path
+    post login_path, params: { session: { email: @user.email,
+                                          password: 'password' } }
+    assert is_logged_in?
+    assert_redirected_to @user
+    follow_redirect!
+    assert_template 'users/show'
+
+    get recipes_path
+    get new_recipe_path
+    assert_no_difference 'Recipe.count' do
+      post recipes_path, params: { recipe: { category: "Tofu",
+                                             title: "    ",
+                                             ingredients: "Tofu, Onion, Salt, Pepper",
+                                             direction: "1, Cut tofu and onion. 2, Stir fry. 3, Put salt and pepper for taste.",
+                                             url: "google.com",
+                                             user_id: @user.id } }
+    end
+    assert_template 'recipes/new'
+  end
+
+  test "Invalid recipe - Title is too long" do
+    get login_path
+    post login_path, params: { session: { email: @user.email,
+                                          password: 'password' } }
+    assert is_logged_in?
+    assert_redirected_to @user
+    follow_redirect!
+    assert_template 'users/show'
+
+    get recipes_path
+    get new_recipe_path
+    assert_no_difference 'Recipe.count' do
+      post recipes_path, params: { recipe: { category: "Tofu",
+                                             title: 'a'*51,
+                                             ingredients: "Tofu, Onion, Salt, Pepper",
+                                             direction: "1, Cut tofu and onion. 2, Stir fry. 3, Put salt and pepper for taste.",
+                                             url: "google.com",
+                                             user_id: @user.id } }
+    end
+    assert_template 'recipes/new'
+  end
+
+  test "Valid recipe" do
+    get login_path
+    post login_path, params: { session: { email: @user.email,
+                                          password: 'password' } }
+    assert is_logged_in?
+    assert_redirected_to @user
+    follow_redirect!
+    assert_template 'users/show'
+
+    get recipes_path
+    get new_recipe_path
+    assert_difference 'Recipe.count', 1 do
+      post recipes_path, params: { recipe: { category: "Tofu",
+                                             title: "Tofu and onion",
+                                             ingredients: "Tofu, Onion, Salt, Pepper",
+                                             direction: "1, Cut tofu and onion. 2, Stir fry. 3, Put salt and pepper for taste.",
+                                             url: "google.com",
+                                             user_id: @user.id } }
+    end
+    follow_redirect!
+    assert_template 'show'
+  end
+
 end
