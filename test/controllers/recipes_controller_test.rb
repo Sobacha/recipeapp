@@ -91,6 +91,28 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     assert_template 'recipes/new'
   end
 
+  test "Invalid recipe - Category is too long" do
+    get login_path
+    post login_path, params: { session: { email: @user.email,
+                                          password: 'password' } }
+    assert is_logged_in?
+    assert_redirected_to @user
+    follow_redirect!
+    assert_template 'users/show'
+
+    get recipes_path
+    get new_recipe_path
+    assert_no_difference 'Recipe.count' do
+      post recipes_path, params: { recipe: { category: 'a'*51,
+                                             title: "Fried rice",
+                                             ingredients: "Cooked rice, Onion, Egg, Carrot, Salt, Pepper",
+                                             direction: "1, Cut onion and carrot. 2, Stir fry. Add egg. 3, Put salt and pepper for taste.",
+                                             url: "google.com",
+                                             user_id: @user.id } }
+    end
+    assert_template 'recipes/new'
+  end
+
   test "Valid recipe" do
     get login_path
     post login_path, params: { session: { email: @user.email,
