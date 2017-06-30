@@ -2,10 +2,9 @@
 
   <% if @recipe.errors.any? %>
     <div id="error_explanation">
-      <h2>
-        <%= pluralize(@recipe.errors.count, "error") %> prohibited
-        this recipe from being saved:
-      </h2>
+      <div class="alert alert-danger">
+        <%= pluralize(@recipe.errors.count, "error") %> prohibited this recipe from being saved:
+      </div>
       <ul>
         <% @recipe.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>

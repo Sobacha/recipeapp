@@ -5,41 +5,46 @@
 # below each fixture, per the syntax in the comments below
 #
 one:
+  id: 1
   category: Fish
   title: Oven baled salmon
   ingredients: Salmon
   direction: 1. Preheat the oven. 2. Bake salmon for 20 minutes.
   url:
-  user_id: users(:one).id
+  user_id: 1
 
 two:
+  id: 2
   category: Meat
   title: Hamburg
   ingredients: Ground beef, Ground pork, Nutmeg, Salt, Pepper, Egg, Panko
   direction: 1. Mix ingredients well. 2. Shape in oval. 3. Heat pan. 4. Fry.
   url:
-  user_id: users(:two).id
+  user_id: 1
 
 three:
+  id: 3
   category: Meat
   title: Ginger pork
   ingredients: Ginger, Pork, Sugar, Soy sauce
   direction: 1. Mix ingredients well. 2. Let it rest for 30 minutes. 3. Heat pan. 4. Fry.
   url:
-  user_id: users(:two).id
+  user_id: 2
 
 four:
+  id: 4
   category: Tofu
   title: Mabo Tofu
   ingredients: Ground pork, Tofu, Corn starch, Tobanzyan, Umami powder, Miso
   direction: 1. Stir fry pork and tobanzyan. 2. Put tofu and umami powder and miso and water. 3. Simmer for 30 minutes. 4. Add corn starch + water.
   url:
-  user_id: users(:three).id
+  user_id: 3
 
 five:
+  id: 5
   category: Meat
   title: Hamburger
   ingredients: Buns, Ground beef, Ground pork, Nutmeg, Salt, Pepper, Egg, Panko
   direction: 1. Mix ingredients well. 2. Shape in oval. 3. Heat pan. 4. Fry. 5. Sand with buns.
   url: google.com
-  user_id: users(:three).id
+  user_id: 3
