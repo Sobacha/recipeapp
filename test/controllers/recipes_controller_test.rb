@@ -243,7 +243,8 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                                     ingredients: @recipe.ingredients,
                                                     direction: @recipe.direction,
                                                     url: @recipe.url,
-                                                    user_id: @recipe.user_id } }
+                                                    # user_id is not passed when updated so no need to pass?
+                                                    } }
     follow_redirect!
     assert_template 'show'
   end
