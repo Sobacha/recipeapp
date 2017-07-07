@@ -7,7 +7,7 @@
 one:
   id: 1
   category: Fish
-  title: Oven baled salmon
+  title: Oven baked salmon
   ingredients: Salmon
   direction: 1. Preheat the oven. 2. Bake salmon for 20 minutes.
   url:
