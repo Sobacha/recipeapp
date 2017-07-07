@@ -249,4 +249,22 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     assert_template 'show'
   end
 
+  test "Delete recipe - (from the list of recipes page)" do
+    get login_path
+    post login_path, params: { session: { email: @user.email,
+                                          password: 'password' } }
+    assert is_logged_in?
+    assert_redirected_to @user
+    follow_redirect!
+    assert_template 'users/show'
+
+    get recipes_path
+    # how to test pop-up confirmation msg?
+    assert_difference 'Recipe.count', -1 do
+      delete recipe_path(@recipe)
+    end
+
+    follow_redirect!
+    assert_template 'index'
+  end
 end
