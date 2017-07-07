@@ -5,7 +5,7 @@
       <div class="alert alert-danger">
         <%= pluralize(@recipe.errors.count, "error") %> prohibited this recipe from being saved:
       </div>
-      <ul>
+      <ul class="alert alert-danger">
         <% @recipe.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
         <% end %>

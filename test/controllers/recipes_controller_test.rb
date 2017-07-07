@@ -46,6 +46,8 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                              user_id: @user.id } }
     end
     assert_template 'recipes/new'
+    assert_select "div.alert", text: "1 error prohibited this recipe from being saved:"
+    assert_select "ul.alert", text: "Title can't be blank"
   end
 
   test "Invalid recipe - No title(Only space input)" do
@@ -68,6 +70,8 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                              user_id: @user.id } }
     end
     assert_template 'recipes/new'
+    assert_select "div.alert", text: "1 error prohibited this recipe from being saved:"
+    assert_select "ul.alert", text: "Title can't be blank"
   end
 
   test "Invalid recipe - Title is too long" do
@@ -90,6 +94,8 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                              user_id: @user.id } }
     end
     assert_template 'recipes/new'
+    assert_select "div.alert", text: "1 error prohibited this recipe from being saved:"
+    assert_select "ul.alert", text: "Title is too long (maximum is 50 characters)"
   end
 
   test "Invalid recipe - Category is too long" do
@@ -112,6 +118,36 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                              user_id: @user.id } }
     end
     assert_template 'recipes/new'
+    assert_select "div.alert", text: "1 error prohibited this recipe from being saved:"
+    assert_select "ul.alert", text: "Category is too long (maximum is 50 characters)"
+  end
+
+  test "Invalid recipe - Category and title are too long" do
+    get login_path
+    post login_path, params: { session: { email: @user.email,
+                                          password: 'password' } }
+    assert is_logged_in?
+    assert_redirected_to @user
+    follow_redirect!
+    assert_template 'users/show'
+
+    get recipes_path
+    get new_recipe_path
+    # how to test text field is prefilled?
+    assert_no_difference 'Recipe.count' do
+      post recipes_path, params: { recipe: { category: 'a'*51,
+                                             title: 'b'*51,
+                                             ingredients: @recipe.ingredients,
+                                             direction: @recipe.direction,
+                                             url: @recipe.url,
+                                             user_id: @recipe.user_id } }
+    end
+    assert_template 'recipes/new'
+    assert_select "div.alert", text: "2 errors prohibited this recipe from being saved:"
+    assert_select "ul.alert" do
+      assert_select "li", 2
+      # how to test actual msg is correct?
+    end
   end
 
   test "Valid recipe" do
@@ -157,6 +193,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                                     user_id: @recipe.user_id } }
     assert_template 'edit'
     assert_select "div.alert", text: "1 error prohibited this recipe from being saved:"
+    assert_select "ul.alert", text: "Title can't be blank"
   end
 
   test "Invalid edit recipe - No title(Only space input) - (from the recipe show page)" do
@@ -180,6 +217,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                                     user_id: @recipe.user_id } }
     assert_template 'edit'
     assert_select "div.alert", text: "1 error prohibited this recipe from being saved:"
+    assert_select "ul.alert", text: "Title can't be blank"
   end
 
   test "Invalid edit recipe - Title is too long" do
@@ -202,6 +240,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                                     user_id: @recipe.user_id } }
     assert_template 'edit'
     assert_select "div.alert", text: "1 error prohibited this recipe from being saved:"
+    assert_select "ul.alert", text: "Title is too long (maximum is 50 characters)"
   end
 
   test "Invalid edit recipe - Category is too long" do
@@ -224,6 +263,33 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                                     user_id: @recipe.user_id } }
     assert_template 'edit'
     assert_select "div.alert", text: "1 error prohibited this recipe from being saved:"
+    assert_select "ul.alert", text: "Category is too long (maximum is 50 characters)"
+  end
+
+  test "Invalid edit recipe - Category is too long and No title" do
+    get login_path
+    post login_path, params: { session: { email: @user.email,
+                                          password: 'password' } }
+    assert is_logged_in?
+    assert_redirected_to @user
+    follow_redirect!
+    assert_template 'users/show'
+
+    get recipes_path
+    get edit_recipe_path(@recipe)
+    # how to test text field is prefilled?
+    patch recipe_path(@recipe), params: { recipe: { category: 'a'*51,
+                                                    title: "",
+                                                    ingredients: @recipe.ingredients,
+                                                    direction: @recipe.direction,
+                                                    url: @recipe.url,
+                                                    user_id: @recipe.user_id } }
+    assert_template 'edit'
+    assert_select "div.alert", text: "2 errors prohibited this recipe from being saved:"
+    assert_select "ul.alert" do
+      assert_select "li", 2
+      # how to test actual msg is correct?
+    end
   end
 
   test "Valid edit recipe" do
