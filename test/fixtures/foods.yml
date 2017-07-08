@@ -6,7 +6,7 @@ one:
   purchase_date: 2017-05-01
   expiration_date: 2017-05-01
   quantity: 1
-  user_id: users(:one).id
+  user_id: 1
 
 two:
   category: Meat
@@ -14,7 +14,7 @@ two:
   purchase_date: 2017-05-01
   expiration_date: 2017-05-01
   quantity: 1
-  user_id: users(:one).id
+  user_id: 1
 
 three:
   category: Vegetable
@@ -22,7 +22,7 @@ three:
   purchase_date: 2017-05-01
   expiration_date: 2017-05-01
   quantity: 1
-  user_id: users(:two).id
+  user_id: 2
 
 four:
   category: Meat
@@ -30,7 +30,7 @@ four:
   purchase_date: 2017-05-01
   expiration_date: 2017-05-01
   quantity: 1
-  user_id: users(:two).id
+  user_id: 2
 
 five:
   category: Vegetable
@@ -38,7 +38,7 @@ five:
   purchase_date: 2017-05-01
   expiration_date: 2017-05-01
   quantity: 1
-  user_id: users(:three).id
+  user_id: 3
 
 six:
   category: Beans
@@ -46,7 +46,7 @@ six:
   purchase_date: 2017-05-01
   expiration_date: 2017-05-01
   quantity: 1
-  user_id: users(:three).id
+  user_id: 3
 
 seven:
   category: Fruit
@@ -54,4 +54,4 @@ seven:
   purchase_date: 2017-05-01
   expiration_date: 2017-05-01
   quantity: 1
-  user_id: users(:three).id
+  user_id: 3

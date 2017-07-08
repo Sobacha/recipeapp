@@ -150,6 +150,11 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "Invalid recipe - Unauthorized user_id" do
+    pass
+    # user_id is hidden from user. need test?
+  end
+
   test "Valid recipe" do
     get login_path
     post login_path, params: { session: { email: @user.email,
