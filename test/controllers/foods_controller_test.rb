@@ -320,4 +320,23 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_template 'index'
   end
+
+  test "Delete food - (from the list of foods page)" do
+    get login_path
+    post login_path, params: { session: { email: @user.email,
+                                          password: 'password' } }
+    assert is_logged_in?
+    assert_redirected_to @user
+    follow_redirect!
+    assert_template 'users/show'
+
+    get foods_path
+    # how to test pop-up confirmation msg?
+    assert_difference 'Food.count', -1 do
+      delete food_path(@food)
+    end
+
+    follow_redirect!
+    assert_template 'index'
+  end
 end
