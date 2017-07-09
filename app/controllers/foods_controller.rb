@@ -14,7 +14,7 @@ class FoodsController < ApplicationController
   end
 
   def edit
-    @food = Food.find(params[:id])
+    @food = current_user.foods.find(params[:id])
   end
 
   def create
@@ -29,7 +29,7 @@ class FoodsController < ApplicationController
   end
 
   def update
-    @food = Food.find(params[:id])
+    @food = current_user.foods.find(params[:id])
 
     if @food.update(food_params)
       redirect_to action: "index"
@@ -39,7 +39,7 @@ class FoodsController < ApplicationController
   end
 
   def destroy
-    @food = Food.find(params[:id])
+    @food = current_user.foods.find(params[:id])
     @food.destroy
 
     redirect_to foods_path

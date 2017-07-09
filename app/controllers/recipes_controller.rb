@@ -38,22 +38,20 @@ class RecipesController < ApplicationController
   end
 
   def destroy
-    @recipe = Recipe.find(params[:id])
+    @recipe = current_user.recipes.find(params[:id])
     @recipe.destroy
 
     redirect_to recipes_path
   end
 
   def search
-     @food = Food.find(params[:id])
-     @recipes = Recipe.where("ingredients like ?", "%#{@food.name}%")
+     @food = current_user.foods.find(params[:id])
+     @recipes = current_user.recipes.where("ingredients like ?", "%#{@food.name}%")
   end
 
   private
     def recipe_params
       params.require(:recipe).permit(:category, :title, :ingredients, :direction, :url)
     end
-
-
 
 end
