@@ -1,4 +1,6 @@
 class RecipesController < ApplicationController
+  before_action :logged_in_user
+  before_action :correct_user, only:[:show, :edit, :update, :destroy]
 
   def index
     @recipes = current_user.recipes
@@ -45,13 +47,29 @@ class RecipesController < ApplicationController
   end
 
   def search
-     @food = current_user.foods.find(params[:id])
-     @recipes = current_user.recipes.where("ingredients like ?", "%#{@food.name}%")
+    @food = current_user.foods.find(params[:id])
+    @recipes = current_user.recipes.where("ingredients like ?", "%#{@food.name}%")
   end
 
   private
     def recipe_params
       params.require(:recipe).permit(:category, :title, :ingredients, :direction, :url)
+    end
+
+    # Confirms the correct user.
+    def correct_user
+      # @recipes = current_user.foods
+      # if @recipes.nil?
+      #   flash[:danger] = "No authorization to access."
+      #   redirect_to root_url
+      # end
+
+      begin
+        @recipe = current_user.recipes.find(params[:id])
+      rescue ActiveRecord::RecordNotFound
+        flash[:danger] = "You don't have that recipe!"
+        redirect_to root_url
+      end
     end
 
 end

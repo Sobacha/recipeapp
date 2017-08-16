@@ -3,12 +3,15 @@
 To see recipes, click "My Recipes". To see food, click "My foods".
 </p>
 
-<!-- <% if logged_in? %>
-  <%= render 'shared/header' %>
-<% else %> -->
+
+<% flash.each do |message_type, message| %>
+  <div class="alert alert-<%= message_type %>">
+    <%= message %>
+  </div>
+<% end %>
+
+
 <% if !logged_in? %>
   <li><%= link_to "Sign up now!", signup_path %></li>
   <li><%= link_to "Log in", login_path %></li>
 <% end %>
-
-<!-- <% end %> -->

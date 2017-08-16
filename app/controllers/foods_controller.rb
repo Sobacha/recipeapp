@@ -1,4 +1,7 @@
 class FoodsController < ApplicationController
+  before_action :logged_in_user
+  before_action :correct_user, only:[:update, :destroy]
+
   def index
     @foods = current_user.foods
   end
@@ -50,4 +53,19 @@ class FoodsController < ApplicationController
       params.require(:food).permit(:category, :name, :purchase_date, :expiration_date, :quantity)
     end
 
+    # Confirms the correct user.
+    def correct_user
+      # @foods = current_user.foods
+      # if @foods.nil?
+      #   flash[:danger] = "No authorization to access."
+      #   redirect_to root_url
+      # end
+
+      begin
+        @food = current_user.foods.find(params[:id])
+      rescue ActiveRecord::RecordNotFound
+        flash[:danger] = "You don't have that food!"
+        redirect_to root_url
+      end
+    end
 end

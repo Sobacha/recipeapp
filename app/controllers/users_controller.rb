@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [:edit, :update]
-  before_action :correct_user,   only: [:edit, :update]
+  before_action :logged_in_user, only: [:show, :edit, :update, :destroy]
+  before_action :correct_user,   only: [:show, :edit, :update, :destroy]
 
 
   def show
@@ -55,16 +55,26 @@ class UsersController < ApplicationController
     # Before filters
 
     # Confirms a logged-in user.
-    def logged_in_user
-      unless logged_in?
-        flash[:danger] = "Please log in."
-        redirect_to login_url
-      end
-    end
+    # def logged_in_user
+    #   unless logged_in?
+    #     flash[:danger] = "Please log in."
+    #     redirect_to login_url
+    #   end
+    # end
 
     # Confirms the correct user.
     def correct_user
-      @user = User.find(params[:id])
-      redirect_to(root_url) unless current_user?(@user)
+      # Rescue if no user in database
+      begin
+        @user = User.find(params[:id])
+      rescue ActiveRecord::RecordNotFound
+        @user = nil
+      end
+      # Actually making sure user is authorized
+      unless @user == current_user
+        flash[:danger] = "No authorization to access."
+        redirect_to root_url
+      end
     end
+
 end
