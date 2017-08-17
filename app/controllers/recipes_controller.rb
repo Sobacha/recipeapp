@@ -58,17 +58,11 @@ class RecipesController < ApplicationController
 
     # Confirms the correct user.
     def correct_user
-      # @recipes = current_user.foods
-      # if @recipes.nil?
-      #   flash[:danger] = "No authorization to access."
-      #   redirect_to root_url
-      # end
-
       begin
         @recipe = current_user.recipes.find(params[:id])
       rescue ActiveRecord::RecordNotFound
         flash[:danger] = "You don't have that recipe!"
-        redirect_to root_url
+        redirect_to recipes_path
       end
     end
 

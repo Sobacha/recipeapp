@@ -22,16 +22,32 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def setup
-    @user = users(:one)
+    @authorized_user = users(:one)
+    @non_autho_user = users(:two)
     @recipe = recipes(:two)
+  end
+
+  test "Non-Authorized user can't see other users' recipes." do
+    get login_path
+    post login_path, params: { session: { email: @non_autho_user.email,
+                                          password: 'password' } }
+    assert is_logged_in?
+    assert_redirected_to @non_autho_user
+    follow_redirect!
+    assert_template 'users/show'
+
+    get recipe_path(@recipe)
+    follow_redirect!
+    assert_template 'index'
+    assert_select "div.alert", text: "You don't have that recipe!"
   end
 
   test "Invalid recipe - No title(Empty input)" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @authorized_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
@@ -43,7 +59,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                              ingredients: "Tofu, Onion, Salt, Pepper",
                                              direction: "1, Cut tofu and onion. 2, Stir fry. 3, Put salt and pepper for taste.",
                                              url: "google.com",
-                                             user_id: @user.id } }
+                                             user_id: @authorized_user.id } }
     end
     assert_template 'recipes/new'
     assert_select "div.alert", text: "1 error prohibited this recipe from being saved:"
@@ -52,10 +68,10 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
 
   test "Invalid recipe - No title(Only space input)" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @authorized_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
@@ -67,7 +83,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                              ingredients: "Tofu, Onion, Salt, Pepper",
                                              direction: "1, Cut tofu and onion. 2, Stir fry. 3, Put salt and pepper for taste.",
                                              url: "google.com",
-                                             user_id: @user.id } }
+                                             user_id: @authorized_user.id } }
     end
     assert_template 'recipes/new'
     assert_select "div.alert", text: "1 error prohibited this recipe from being saved:"
@@ -76,10 +92,10 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
 
   test "Invalid recipe - Title is too long" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @authorized_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
@@ -91,7 +107,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                              ingredients: "Tofu, Onion, Salt, Pepper",
                                              direction: "1, Cut tofu and onion. 2, Stir fry. 3, Put salt and pepper for taste.",
                                              url: "google.com",
-                                             user_id: @user.id } }
+                                             user_id: @authorized_user.id } }
     end
     assert_template 'recipes/new'
     assert_select "div.alert", text: "1 error prohibited this recipe from being saved:"
@@ -100,10 +116,10 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
 
   test "Invalid recipe - Category is too long" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @authorized_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
@@ -115,7 +131,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                              ingredients: "Cooked rice, Onion, Egg, Carrot, Salt, Pepper",
                                              direction: "1, Cut onion and carrot. 2, Stir fry. Add egg. 3, Put salt and pepper for taste.",
                                              url: "google.com",
-                                             user_id: @user.id } }
+                                             user_id: @authorized_user.id } }
     end
     assert_template 'recipes/new'
     assert_select "div.alert", text: "1 error prohibited this recipe from being saved:"
@@ -124,10 +140,10 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
 
   test "Invalid recipe - Category and title are too long" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @authorized_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
@@ -157,10 +173,10 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
 
   test "Valid recipe" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @authorized_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
@@ -172,18 +188,54 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                              ingredients: "Tofu, Onion, Salt, Pepper",
                                              direction: "1, Cut tofu and onion. 2, Stir fry. 3, Put salt and pepper for taste.",
                                              url: "google.com",
-                                             user_id: @user.id } }
+                                             user_id: @authorized_user.id } }
     end
     follow_redirect!
     assert_template 'show'
   end
 
-  test "Invalid edit recipe - No title(Empty input) - (from the list of recipes page)" do
+  test "Non-Authorized user can't access edit url of other users' recipes." do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @non_autho_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @non_autho_user
+    follow_redirect!
+    assert_template 'users/show'
+
+    get edit_recipe_path(@recipe)
+    follow_redirect!
+    assert_template 'index'
+    assert_select "div.alert", text: "You don't have that recipe!"
+  end
+
+  # Is this necessary?
+  test "Non-Authorized user can't patch other users' recipes." do
+    get login_path
+    post login_path, params: { session: { email: @non_autho_user.email,
+                                          password: 'password' } }
+    assert is_logged_in?
+    assert_redirected_to @non_autho_user
+    follow_redirect!
+    assert_template 'users/show'
+
+    patch recipe_path(@recipe), params: { recipe: { category: @recipe.category,
+                                                    title: "",
+                                                    ingredients: @recipe.ingredients,
+                                                    direction: @recipe.direction,
+                                                    url: @recipe.url,
+                                                    user_id: @recipe.user_id } }
+    follow_redirect!
+    assert_template 'index'
+    assert_select "div.alert", text: "You don't have that recipe!"
+  end
+
+  test "Invalid edit recipe - No title(Empty input) - (from the list of recipes page)" do
+    get login_path
+    post login_path, params: { session: { email: @authorized_user.email,
+                                          password: 'password' } }
+    assert is_logged_in?
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
@@ -203,10 +255,10 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
 
   test "Invalid edit recipe - No title(Only space input) - (from the recipe show page)" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @authorized_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
@@ -227,10 +279,10 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
 
   test "Invalid edit recipe - Title is too long" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @authorized_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
@@ -250,10 +302,10 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
 
   test "Invalid edit recipe - Category is too long" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @authorized_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
@@ -273,10 +325,10 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
 
   test "Invalid edit recipe - Category is too long and No title" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @authorized_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
@@ -299,10 +351,10 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
 
   test "Valid edit recipe" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @authorized_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
@@ -320,12 +372,32 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     assert_template 'show'
   end
 
-  test "Delete recipe - (from the list of recipes page)" do
+  test "Non-authorized user can't delete recipe - (from the list of recipes page)" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @non_autho_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @non_autho_user
+    follow_redirect!
+    assert_template 'users/show'
+
+    get recipes_path
+    # how to test pop-up confirmation msg?
+    assert_no_difference 'Recipe.count' do
+      delete recipe_path(@recipe)
+    end
+
+    follow_redirect!
+    assert_template 'index'
+    assert_select "div.alert", text: "You don't have that recipe!"
+  end
+
+  test "Authorized user can delete recipe - (from the list of recipes page)" do
+    get login_path
+    post login_path, params: { session: { email: @authorized_user.email,
+                                          password: 'password' } }
+    assert is_logged_in?
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 

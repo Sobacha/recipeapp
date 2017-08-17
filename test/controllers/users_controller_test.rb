@@ -22,4 +22,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
                    {controller: "users", action: "destroy", id: "1"})
   end
 
+  test "need to login" do
+    pass
+  end
+
 end
