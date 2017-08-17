@@ -4,9 +4,39 @@ class UsersEditTest < ActionDispatch::IntegrationTest
 
   def setup
     @user = users(:one)
+    @non_autho_user = users(:two)
   end
 
-  test "unsuccessful edit" do
+  test "user must log in to edit" do
+    # edit
+    get edit_user_path(@user)
+    follow_redirect!
+    assert_template 'home'
+    assert_select "div.alert", text: "Please log in."
+    # update
+    patch user_path(@user), params: { user: { name: @user.name,
+                                              email: "foo@invalid",
+                                              password: "changin_password",
+                                              password_confirmation: "changing_password"}}
+    follow_redirect!
+    assert_template 'home'
+    assert_select "div.alert", text: "Please log in."
+  end
+
+  test "non-authorized user can't edit other users' info" do
+    get login_path
+    post login_path, params: { session: { email: @non_autho_user.email,
+                                          password: 'password' } }
+    assert is_logged_in?
+
+    get edit_user_path(@user)
+    follow_redirect!
+    assert_template 'welcome/home'
+    assert_select "div.alert", text: "No authorization to access."
+  end
+
+
+  test "unsuccessful edit with invalid input" do
     get login_path
     post login_path, params: { session: { email: @user.email,
                                           password: 'password' } }

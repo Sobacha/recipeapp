@@ -22,8 +22,55 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
                    {controller: "users", action: "destroy", id: "1"})
   end
 
-  test "" do
-    pass
+  def setup
+    @user = users(:one)
+    @non_autho_user = users(:two)
+  end
+
+  test "user must log in to do actions" do
+    # show
+    get user_path(@user)
+    follow_redirect!
+    assert_template 'home'
+    assert_select "div.alert", text: "Please log in."
+
+    # edit/update --> users_edit_test.rb
+
+    # destroy
+    delete user_path(@user)
+    follow_redirect!
+    assert_template 'home'
+    assert_select "div.alert", text: "Please log in."
+  end
+
+  test "user can't see other users' profile" do
+    get login_path
+    post login_path, params: { session: { email: @non_autho_user.email,
+                                          password: 'password' } }
+    assert is_logged_in?
+    assert_redirected_to @non_autho_user
+    follow_redirect!
+    assert_template 'users/show'
+
+    get user_path(@user)
+    follow_redirect!
+    assert_template 'home'
+    assert_select "div.alert", text: "No authorization to access."
+  end
+
+  test "user can't delete other users" do
+    get login_path
+    post login_path, params: { session: { email: @non_autho_user.email,
+                                          password: 'password' } }
+    assert is_logged_in?
+    assert_redirected_to @non_autho_user
+    follow_redirect!
+    assert_template 'users/show'
+
+    delete user_path(@user)
+    follow_redirect!
+    assert_template 'home'
+    assert_select "div.alert", text: "No authorization to access."
   end
 
 end
