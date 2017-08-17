@@ -27,6 +27,60 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     @recipe = recipes(:two)
   end
 
+  test "User must log in to do actions." do
+    # index
+    get recipes_path
+    follow_redirect!
+    assert_template 'home'
+    assert_select "div.alert", text: "Please log in."
+
+    # show
+    get recipe_path(@recipe)
+    follow_redirect!
+    assert_template 'home'
+    assert_select "div.alert", text: "Please log in."
+
+    # new
+    get new_recipe_path
+    follow_redirect!
+    assert_template 'home'
+    assert_select "div.alert", text: "Please log in."
+
+    # create
+    post recipes_path, params: { recipe: { category: "Tofu",
+                                           title: "    ",
+                                           ingredients: "Tofu, Onion, Salt, Pepper",
+                                           direction: "1, Cut tofu and onion. 2, Stir fry. 3, Put salt and pepper for taste.",
+                                           url: "google.com",
+                                           user_id: @authorized_user.id } }
+    follow_redirect!
+    assert_template 'home'
+    assert_select "div.alert", text: "Please log in."
+
+    # edit
+    get edit_recipe_path(@recipe)
+    follow_redirect!
+    assert_template 'home'
+    assert_select "div.alert", text: "Please log in."
+
+    # update
+    patch recipe_path(@recipe), params: { recipe: { category: @recipe.category,
+                                                    title: "",
+                                                    ingredients: @recipe.ingredients,
+                                                    direction: @recipe.direction,
+                                                    url: @recipe.url,
+                                                    user_id: @recipe.user_id } }
+    follow_redirect!
+    assert_template 'home'
+    assert_select "div.alert", text: "Please log in."
+
+    # destroy
+    delete recipe_path(@recipe)
+    follow_redirect!
+    assert_template 'home'
+    assert_select "div.alert", text: "Please log in."
+  end
+
   test "Non-Authorized user can't see other users' recipes." do
     get login_path
     post login_path, params: { session: { email: @non_autho_user.email,
