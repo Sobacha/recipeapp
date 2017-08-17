@@ -48,3 +48,21 @@ five:
   direction: 1. Mix ingredients well. 2. Shape in oval. 3. Heat pan. 4. Fry. 5. Sand with buns.
   url: google.com
   user_id: 3
+
+six:
+  id: 6
+  category: Tofu
+  title: Hiyayakko
+  ingredients: Kinugoshi tofu, Jalapeno miso
+  direction: Eat together.
+  url:
+  user_id: 3
+
+seven:
+  id: 7
+  category: Tofu
+  title: Teriyaki tofu
+  ingredients: Firm Tofu, Soy sauce, Sugar, Sake, Mirin
+  direction: 1. Pan fry tofu. 2. Put the rest ingredients in pan. 3. Simmer until gets thicker.
+  url:
+  user_id: 3

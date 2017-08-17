@@ -1,6 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  id: 1
   category: Fish
   name: Salmon
   purchase_date: 2017-05-01
@@ -9,6 +10,7 @@ one:
   user_id: 1
 
 two:
+  id: 2
   category: Meat
   name: Ground beef
   purchase_date: 2017-05-01
@@ -17,6 +19,7 @@ two:
   user_id: 1
 
 three:
+  id: 3
   category: Vegetable
   name: Ginger
   purchase_date: 2017-05-01
@@ -25,6 +28,7 @@ three:
   user_id: 2
 
 four:
+  id: 4
   category: Meat
   name: Lamb shank
   purchase_date: 2017-05-01
@@ -33,6 +37,7 @@ four:
   user_id: 2
 
 five:
+  id: 5
   category: Vegetable
   name: Spinach
   purchase_date: 2017-05-01
@@ -41,6 +46,7 @@ five:
   user_id: 3
 
 six:
+  id: 6
   category: Beans
   name: Tofu
   purchase_date: 2017-05-01
@@ -49,6 +55,7 @@ six:
   user_id: 3
 
 seven:
+  id: 7
   category: Fruit
   name: Orange
   purchase_date: 2017-05-01

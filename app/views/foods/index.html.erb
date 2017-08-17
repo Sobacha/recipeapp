@@ -14,9 +14,9 @@
 
   <% if @foods.any? %>
     <% @foods.each do |food| %>
-      <tr>
+      <tr id= <%= food.id %> >
         <td><%= food.category %></td>
-        <td><%= food.name %></td>
+        <td id= <%= food.id %> ><%= food.name %></td>
         <td><%= food.purchase_date %></td>
         <td><%= food.expiration_date %></td>
         <td><%= food.quantity %></td>
