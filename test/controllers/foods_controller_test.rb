@@ -20,7 +20,6 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
 
   # Test for index
   test "user must log in to see food list." do
-    # index
     get foods_path
     follow_redirect!
     assert login_error_msg
@@ -328,7 +327,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     assert unauthorized_data_error_msg("food")
   end
 
-  test "valid delete - delete from the food index view" do
+  test "valid delete - from the food index view" do
     assert log_in(@authorized_user)
 
     get foods_path

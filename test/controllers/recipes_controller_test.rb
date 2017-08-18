@@ -15,36 +15,39 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                    {controller: "recipes", action: "edit", id: "1"})
     assert_routing({method: 'patch', path: 'recipes/1'},
                    {controller: "recipes", action: "update", id: "1"})
-    # assert_routing({method: 'put', path: 'recipes/1'},
-    #                {controller: "recipes", action: "update", id: "1"})
     assert_routing({method: 'delete', path: 'recipes/1'},
                    {controller: "recipes", action: "destroy", id: "1"})
   end
 
-  # def setup
-  #   @authorized_user = users(:one)
-  #   @non_autho_user = users(:two)
-  #   @recipe = recipes(:two)
-  # end
 
-  test "User must log in to do actions." do
-    # index
+  # Test for index
+  test "user must log in to see recipe list" do
     get recipes_path
     follow_redirect!
-    assert_template 'home'
-    assert_select "div.alert", text: "Please log in."
+    assert login_error_msg
+  end
 
-    # show
+  # Test for show
+  test "user must log in to see a recipe detail" do
     get recipe_path(@recipe)
     follow_redirect!
-    assert_template 'home'
-    assert_select "div.alert", text: "Please log in."
+    assert login_error_msg
+  end
 
+  test "user can't see other users' recipes" do
+    assert log_in(@non_autho_user)
+
+    get recipe_path(@recipe)
+    follow_redirect!
+    assert unauthorized_data_error_msg("recipe")
+  end
+
+  # Test for create
+  test "user must log in to create a recipe" do
     # new
     get new_recipe_path
     follow_redirect!
-    assert_template 'home'
-    assert_select "div.alert", text: "Please log in."
+    assert login_error_msg
 
     # create
     post recipes_path, params: { recipe: { category: "Tofu",
@@ -54,56 +57,11 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                            url: "google.com",
                                            user_id: @authorized_user.id } }
     follow_redirect!
-    assert_template 'home'
-    assert_select "div.alert", text: "Please log in."
-
-    # edit
-    get edit_recipe_path(@recipe)
-    follow_redirect!
-    assert_template 'home'
-    assert_select "div.alert", text: "Please log in."
-
-    # update
-    patch recipe_path(@recipe), params: { recipe: { category: @recipe.category,
-                                                    title: "",
-                                                    ingredients: @recipe.ingredients,
-                                                    direction: @recipe.direction,
-                                                    url: @recipe.url,
-                                                    user_id: @recipe.user_id } }
-    follow_redirect!
-    assert_template 'home'
-    assert_select "div.alert", text: "Please log in."
-
-    # destroy
-    delete recipe_path(@recipe)
-    follow_redirect!
-    assert_template 'home'
-    assert_select "div.alert", text: "Please log in."
+    assert login_error_msg
   end
 
-  test "Non-Authorized user can't see other users' recipes." do
-    get login_path
-    post login_path, params: { session: { email: @non_autho_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @non_autho_user
-    follow_redirect!
-    assert_template 'users/show'
-
-    get recipe_path(@recipe)
-    follow_redirect!
-    assert_template 'index'
-    assert_select "div.alert", text: "You don't have that recipe!"
-  end
-
-  test "Invalid recipe - No title(Empty input)" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "empty title mustn't be saved" do
+    assert log_in(@authorized_user)
 
     get recipes_path
     get new_recipe_path
@@ -120,14 +78,8 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     assert_select "ul.alert", text: "Title can't be blank"
   end
 
-  test "Invalid recipe - No title(Only space input)" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "space-only title mustn't be saved" do
+    assert log_in(@authorized_user)
 
     get recipes_path
     get new_recipe_path
@@ -144,14 +96,8 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     assert_select "ul.alert", text: "Title can't be blank"
   end
 
-  test "Invalid recipe - Title is too long" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "too long title mustn't be saved" do
+    assert log_in(@authorized_user)
 
     get recipes_path
     get new_recipe_path
@@ -168,14 +114,8 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     assert_select "ul.alert", text: "Title is too long (maximum is 50 characters)"
   end
 
-  test "Invalid recipe - Category is too long" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "too long category mustn't be saved" do
+    assert log_in(@authorized_user)
 
     get recipes_path
     get new_recipe_path
@@ -192,14 +132,8 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     assert_select "ul.alert", text: "Category is too long (maximum is 50 characters)"
   end
 
-  test "Invalid recipe - Category and title are too long" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "both title and category are too long to be saved" do
+    assert log_in(@authorized_user)
 
     get recipes_path
     get new_recipe_path
@@ -220,14 +154,8 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "Valid recipe" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "valid new recipe" do
+    assert log_in(@authorized_user)
 
     get recipes_path
     get new_recipe_path
@@ -243,30 +171,35 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     assert_template 'show'
   end
 
-  test "Non-Authorized user can't access edit url of other users' recipes." do
-    get login_path
-    post login_path, params: { session: { email: @non_autho_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @non_autho_user
+  # Test for edit
+  test "user must log in to edit/update recipes" do
+    # edit
+    get edit_recipe_path(@recipe)
     follow_redirect!
-    assert_template 'users/show'
+    assert login_error_msg
+
+    # update
+    patch recipe_path(@recipe), params: { recipe: { category: @recipe.category,
+                                                    title: "",
+                                                    ingredients: @recipe.ingredients,
+                                                    direction: @recipe.direction,
+                                                    url: @recipe.url,
+                                                    user_id: @recipe.user_id } }
+    follow_redirect!
+    assert login_error_msg
+  end
+
+  test "user can't access edit_recipe_path for other users' recipes" do
+    assert log_in(@non_autho_user)
 
     get edit_recipe_path(@recipe)
     follow_redirect!
-    assert_template 'index'
-    assert_select "div.alert", text: "You don't have that recipe!"
+    assert unauthorized_data_error_msg("recipe")
   end
 
   # Is this necessary?
-  test "Non-Authorized user can't patch other users' recipes." do
-    get login_path
-    post login_path, params: { session: { email: @non_autho_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @non_autho_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "user can't send patch for other users' recipes" do
+    assert log_in(@non_autho_user)
 
     patch recipe_path(@recipe), params: { recipe: { category: @recipe.category,
                                                     title: "",
@@ -275,18 +208,11 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                                     url: @recipe.url,
                                                     user_id: @recipe.user_id } }
     follow_redirect!
-    assert_template 'index'
-    assert_select "div.alert", text: "You don't have that recipe!"
+    assert unauthorized_data_error_msg("recipe")
   end
 
-  test "Invalid edit recipe - No title(Empty input) - (from the list of recipes page)" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "title mustn't be modified to empty - from the recipes index view" do
+    assert log_in(@authorized_user)
 
     get recipes_path
     get edit_recipe_path(@recipe)
@@ -302,14 +228,8 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     assert_select "ul.alert", text: "Title can't be blank"
   end
 
-  test "Invalid edit recipe - No title(Only space input) - (from the recipe show page)" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "title mustn't be modified to space-only - from the recipe show view" do
+    assert log_in(@authorized_user)
 
     get recipes_path
     get recipe_path(@recipe)
@@ -326,14 +246,8 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     assert_select "ul.alert", text: "Title can't be blank"
   end
 
-  test "Invalid edit recipe - Title is too long" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "title mustn't be modified to be too long" do
+    assert log_in(@authorized_user)
 
     get recipes_path
     get edit_recipe_path(@recipe)
@@ -349,14 +263,8 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     assert_select "ul.alert", text: "Title is too long (maximum is 50 characters)"
   end
 
-  test "Invalid edit recipe - Category is too long" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "category mustn't be modified to be too long" do
+    assert log_in(@authorized_user)
 
     get recipes_path
     get edit_recipe_path(@recipe)
@@ -372,20 +280,14 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     assert_select "ul.alert", text: "Category is too long (maximum is 50 characters)"
   end
 
-  test "Invalid edit recipe - Category is too long and No title" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "both title and category mustn't be modified to be too long" do
+    assert log_in(@authorized_user)
 
     get recipes_path
     get edit_recipe_path(@recipe)
     # how to test text field is prefilled?
     patch recipe_path(@recipe), params: { recipe: { category: 'a'*51,
-                                                    title: "",
+                                                    title: 'b'*55,
                                                     ingredients: @recipe.ingredients,
                                                     direction: @recipe.direction,
                                                     url: @recipe.url,
@@ -398,14 +300,8 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "Valid edit recipe" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "valid edit recipe" do
+    assert log_in(@authorized_user)
 
     get recipes_path
     get edit_recipe_path(@recipe)
@@ -421,14 +317,15 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     assert_template 'show'
   end
 
-  test "Non-authorized user can't delete recipe - (from the list of recipes page)" do
-    get login_path
-    post login_path, params: { session: { email: @non_autho_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @non_autho_user
+  # Test for destroy
+  test "user must log in to delete a recipe" do
+    delete recipe_path(@recipe)
     follow_redirect!
-    assert_template 'users/show'
+    assert login_error_msg
+  end
+
+  test "user can't delete other users' recipe - from the recipe index view" do
+    assert log_in(@non_autho_user)
 
     get recipes_path
     # how to test pop-up confirmation msg?
@@ -437,18 +334,11 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     end
 
     follow_redirect!
-    assert_template 'index'
-    assert_select "div.alert", text: "You don't have that recipe!"
+    assert unauthorized_data_error_msg("recipe")
   end
 
-  test "Authorized user can delete recipe - (from the list of recipes page)" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "valid delete - from the recipes index view" do
+    assert log_in(@authorized_user)
 
     get recipes_path
     # how to test pop-up confirmation msg?
