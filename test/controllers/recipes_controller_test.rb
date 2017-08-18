@@ -21,11 +21,11 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                    {controller: "recipes", action: "destroy", id: "1"})
   end
 
-  def setup
-    @authorized_user = users(:one)
-    @non_autho_user = users(:two)
-    @recipe = recipes(:two)
-  end
+  # def setup
+  #   @authorized_user = users(:one)
+  #   @non_autho_user = users(:two)
+  #   @recipe = recipes(:two)
+  # end
 
   test "User must log in to do actions." do
     # index

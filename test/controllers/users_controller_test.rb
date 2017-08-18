@@ -22,22 +22,19 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
                    {controller: "users", action: "destroy", id: "1"})
   end
 
-  def setup
-    @user = users(:one)
-    @non_autho_user = users(:two)
-  end
 
-  test "user must log in to do actions" do
-    # show
-    get user_path(@user)
+
+  test "user must log in to see profile" do
+    get user_path(@authorized_user)
     follow_redirect!
     assert_template 'home'
     assert_select "div.alert", text: "Please log in."
+  end
 
-    # edit/update --> users_edit_test.rb
+  # test "user must log in to edit/update" --> users_edit_test.rb
 
-    # destroy
-    delete user_path(@user)
+  test "user must log in to delete itself" do
+    delete user_path(@authorized_user)
     follow_redirect!
     assert_template 'home'
     assert_select "div.alert", text: "Please log in."
@@ -52,7 +49,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_template 'users/show'
 
-    get user_path(@user)
+    get user_path(@authorized_user)
     follow_redirect!
     assert_template 'home'
     assert_select "div.alert", text: "No authorization to access."
@@ -67,7 +64,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_template 'users/show'
 
-    delete user_path(@user)
+    delete user_path(@authorized_user)
     follow_redirect!
     assert_template 'home'
     assert_select "div.alert", text: "No authorization to access."

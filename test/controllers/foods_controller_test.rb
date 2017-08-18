@@ -13,32 +13,27 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                    {controller: "foods", action: "edit", id: "1"})
     assert_routing({method: 'patch', path: 'foods/1'},
                    {controller: "foods", action: "update", id: "1"})
-    # assert_routing({method: 'put', path: 'foods/1'},
-    #                {controller: "foods", action: "update", id: "1"})
     assert_routing({method: 'delete', path: 'foods/1'},
                    {controller: "foods", action: "destroy", id: "1"})
   end
 
-  def setup
-    @authorized_user = users(:one)
-    @non_autho_user = users(:two)
-    @food = foods(:two)
-  end
 
-  test "User must log in to do actions." do
+  # Test for index
+  test "user must log in to see food list." do
     # index
     get foods_path
     follow_redirect!
-    assert_template 'home'
-    assert_select "div.alert", text: "Please log in."
+    assert login_error_msg
+  end
 
-    # new
+  # Test for create
+  test "user must log in to create new food" do
+    # prevent accessing new_food_path
     get new_food_path
     follow_redirect!
-    assert_template 'home'
-    assert_select "div.alert", text: "Please log in."
+    assert login_error_msg
 
-    # create
+    # prevent sending post directly
     post foods_path, params: { food: { category: "Fish",
                                        name: "Tuna",
                                        purchase_date: 2017-05-01,
@@ -46,42 +41,11 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                        quantity: 1,
                                        user_id: @authorized_user.id } }
     follow_redirect!
-    assert_template 'home'
-    assert_select "div.alert", text: "Please log in."
-
-    # edit
-    get edit_food_path(@food)
-    follow_redirect!
-    assert_template 'home'
-    assert_select "div.alert", text: "Please log in."
-
-    # update
-    patch food_path(@food), params: { food: { category: "Fish",
-                                              name: "Tuna",
-                                              purchase_date: 2017-05-01,
-                                              expiration_date: 2017-05-01,
-                                              quantity: 1,
-                                              user_id: @authorized_user.id } }
-    follow_redirect!
-    assert_template 'home'
-    assert_select "div.alert", text: "Please log in."
-
-    # destroy
-    delete food_path(@food)
-    follow_redirect!
-    assert_template 'home'
-    assert_select "div.alert", text: "Please log in."
+    assert login_error_msg
   end
 
-  # Test for create
-  test "Invalid food - No name(Empty input)" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "empty name mustn't be saved" do
+    assert log_in(@authorized_user)
 
     get foods_path
     get new_food_path
@@ -98,14 +62,8 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     assert_select "ul.alert", text: "Name can't be blank"
   end
 
-  test "Invalid food - No name(Only space input)" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "space-only name mustn't be saved" do
+    assert log_in(@authorized_user)
 
     get foods_path
     get new_food_path
@@ -122,14 +80,8 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     assert_select "ul.alert", text: "Name can't be blank"
   end
 
-  test "Invalid food - Too long name" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "too long name mustn't be saved" do
+    assert log_in(@authorized_user)
 
     get foods_path
     get new_food_path
@@ -146,14 +98,8 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     assert_select "ul.alert", text: "Name is too long (maximum is 50 characters)"
   end
 
-  test "Invalid food - Too long category" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "too long category mustn't be saved" do
+    assert log_in(@authorized_user)
 
     get foods_path
     get new_food_path
@@ -175,14 +121,8 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     # user_id is hidden from user. need test?
   end
 
-  test "Invalid food - Too long category and name" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "both name and category are too long to be saved" do
+    assert log_in(@authorized_user)
 
     get foods_path
     get new_food_path
@@ -201,14 +141,8 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "Valid food" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "valid new food" do
+    assert log_in(@authorized_user)
 
     get foods_path
     get new_food_path
@@ -224,30 +158,35 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
   end
 
   # Test for edit
-  test "Invalid edit food - unauthorized user can't access edit url" do
-    get login_path
-    post login_path, params: { session: { email: @non_autho_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @non_autho_user
+  test "user must log in to edit" do
+    # prevent accessing edit_food_path
+    get edit_food_path(@food)
     follow_redirect!
-    assert_template 'users/show'
+    assert login_error_msg
+
+    # prevent sending patch directly
+    patch food_path(@food), params: { food: { category: "Fish",
+                                              name: "Tuna",
+                                              purchase_date: 2017-05-01,
+                                              expiration_date: 2017-05-01,
+                                              quantity: 1,
+                                              user_id: @authorized_user.id } }
+    follow_redirect!
+    assert login_error_msg
+  end
+
+  test "user can't access edit_food_path of other users' food" do
+    assert log_in(@non_autho_user)
 
     get foods_path
     get edit_food_path(@food)
     follow_redirect!
-    assert_template 'index'
-    assert_select "div.alert", text: "You don't have that food!"
+
+    assert unauthorized_data_error_msg("food")
   end
 
-  test "Invalid edit food - unauthorized user can't patch" do
-    get login_path
-    post login_path, params: { session: { email: @non_autho_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @non_autho_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "user can't send patch for other users' food" do
+    assert log_in(@non_autho_user)
 
     patch food_path(@food), params: { food: { category: @food.category,
                                               name: "Berry",
@@ -257,18 +196,11 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                               user_id: @food.user_id
                                                } }
     follow_redirect!
-    assert_template 'index'
-    assert_select "div.alert", text: "You don't have that food!"
+    assert unauthorized_data_error_msg("food")
   end
 
-  test "Invalid edit food - No name(Empty input) - (from the list of foods page)" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "name mustn't be modified to empty - from the food index view" do
+    assert log_in(@authorized_user)
 
     get foods_path
     get edit_food_path(@food)
@@ -285,14 +217,8 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     assert_select "ul.alert", text: "Name can't be blank"
   end
 
-  test "Invalid edit food - No name(Only space input) - (from the food show page)" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "name mustn't be modified to only-space - from the food show view" do
+    assert log_in(@authorized_user)
 
     get foods_path
     get edit_food_path(@food)
@@ -309,14 +235,8 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     assert_select "ul.alert", text: "Name can't be blank"
   end
 
-  test "Invalid edit food - name is too long" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "name mustn't be modified to be too long" do
+    assert log_in(@authorized_user)
 
     get foods_path
     get edit_food_path(@food)
@@ -333,14 +253,8 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     assert_select "ul.alert", text: "Name is too long (maximum is 50 characters)"
   end
 
-  test "Invalid edit food - Category is too long" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "category mustn't be modified to be too long" do
+    assert log_in(@authorized_user)
 
     get foods_path
     get edit_food_path(@food)
@@ -357,14 +271,8 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     assert_select "ul.alert", text: "Category is too long (maximum is 50 characters)"
   end
 
-  test "Invalid edit food - Category is too long and No name" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "name mustn't be modified to empty and category mustn't be modified to be too long" do
+    assert log_in(@authorized_user)
 
     get foods_path
     get edit_food_path(@food)
@@ -384,14 +292,8 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "Valid edit food" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "valid edit food" do
+    assert log_in(@authorized_user)
 
     get foods_path
     get edit_food_path(@food)
@@ -407,32 +309,27 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     assert_template 'index'
   end
 
-  test "Invalid delete food - unauthorized user can't delete food" do
-    get login_path
-    post login_path, params: { session: { email: @non_autho_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @non_autho_user
+  # Test for destroy
+  test "user must log in to delete food" do
+    # destroy
+    delete food_path(@food)
     follow_redirect!
-    assert_template 'users/show'
+    assert login_error_msg
+  end
+
+  test "user can't delete other users' food" do
+    assert log_in(@non_autho_user)
 
     assert_no_difference 'Food.count' do
       delete food_path(@food)
     end
 
     follow_redirect!
-    assert_template 'index'
-    assert_select 'div.alert', text: "You don't have that food!"
+    assert unauthorized_data_error_msg("food")
   end
 
-  test "Delete food - (from the list of foods page)" do
-    get login_path
-    post login_path, params: { session: { email: @authorized_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @authorized_user
-    follow_redirect!
-    assert_template 'users/show'
+  test "valid delete - delete from the food index view" do
+    assert log_in(@authorized_user)
 
     get foods_path
     # how to test pop-up confirmation msg?
