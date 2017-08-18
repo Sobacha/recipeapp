@@ -27,8 +27,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test "user must log in to see profile" do
     get user_path(@authorized_user)
     follow_redirect!
-    assert_template 'home'
-    assert_select "div.alert", text: "Please log in."
+    assert login_error_msg
   end
 
   # test "user must log in to edit/update" --> users_edit_test.rb
@@ -36,38 +35,23 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test "user must log in to delete itself" do
     delete user_path(@authorized_user)
     follow_redirect!
-    assert_template 'home'
-    assert_select "div.alert", text: "Please log in."
+    assert login_error_msg
   end
 
   test "user can't see other users' profile" do
-    get login_path
-    post login_path, params: { session: { email: @non_autho_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @non_autho_user
-    follow_redirect!
-    assert_template 'users/show'
+    assert log_in(@non_autho_user)
 
     get user_path(@authorized_user)
     follow_redirect!
-    assert_template 'home'
-    assert_select "div.alert", text: "No authorization to access."
+    assert unauthorized_data_error_msg("user")
   end
 
   test "user can't delete other users" do
-    get login_path
-    post login_path, params: { session: { email: @non_autho_user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @non_autho_user
-    follow_redirect!
-    assert_template 'users/show'
+    assert log_in(@non_autho_user)
 
     delete user_path(@authorized_user)
     follow_redirect!
-    assert_template 'home'
-    assert_select "div.alert", text: "No authorization to access."
+    assert unauthorized_data_error_msg("user")
   end
 
 end
