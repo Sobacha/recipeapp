@@ -1,16 +1,10 @@
 class FoodsController < ApplicationController
   before_action :logged_in_user
-  before_action :correct_user, only:[:update, :destroy]
+  before_action :correct_user, only:[:edit, :update, :destroy]
 
   def index
     @foods = current_user.foods
   end
-
-  # def show
-  #   @food = Food.find(params[:id])
-  #   @recipes = Recipe.where("ingredients like ?", "%#{@food.name}%")
-  #   #redirect_to :controller => 'recipe', :action => 'selected_recipes', :param => @recipes
-  # end
 
   def new
     @food = Food.new
@@ -59,7 +53,7 @@ class FoodsController < ApplicationController
         @food = current_user.foods.find(params[:id])
       rescue ActiveRecord::RecordNotFound
         flash[:danger] = "You don't have that food!"
-        redirect_to root_url
+        redirect_to foods_path
       end
     end
 end

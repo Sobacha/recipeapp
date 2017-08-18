@@ -20,17 +20,66 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
   end
 
   def setup
-    @user = users(:one)
+    @authorized_user = users(:one)
+    @non_autho_user = users(:two)
     @food = foods(:two)
+  end
+
+  test "User must log in to do actions." do
+    # index
+    get foods_path
+    follow_redirect!
+    assert_template 'home'
+    assert_select "div.alert", text: "Please log in."
+
+    # new
+    get new_food_path
+    follow_redirect!
+    assert_template 'home'
+    assert_select "div.alert", text: "Please log in."
+
+    # create
+    post foods_path, params: { food: { category: "Fish",
+                                       name: "Tuna",
+                                       purchase_date: 2017-05-01,
+                                       expiration_date: 2017-05-01,
+                                       quantity: 1,
+                                       user_id: @authorized_user.id } }
+    follow_redirect!
+    assert_template 'home'
+    assert_select "div.alert", text: "Please log in."
+
+    # edit
+    get edit_food_path(@food)
+    follow_redirect!
+    assert_template 'home'
+    assert_select "div.alert", text: "Please log in."
+
+    # update
+    patch food_path(@food), params: { food: { category: "Fish",
+                                              name: "Tuna",
+                                              purchase_date: 2017-05-01,
+                                              expiration_date: 2017-05-01,
+                                              quantity: 1,
+                                              user_id: @authorized_user.id } }
+    follow_redirect!
+    assert_template 'home'
+    assert_select "div.alert", text: "Please log in."
+
+    # destroy
+    delete food_path(@food)
+    follow_redirect!
+    assert_template 'home'
+    assert_select "div.alert", text: "Please log in."
   end
 
   # Test for create
   test "Invalid food - No name(Empty input)" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @authorized_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
@@ -42,7 +91,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                          purchase_date: 2017-05-01,
                                          expiration_date: 2017-05-01,
                                          quantity: 1,
-                                         user_id: @user.id } }
+                                         user_id: @authorized_user.id } }
     end
     assert_template 'foods/new'
     assert_select "div.alert", text: "1 error prohibited this food from being saved:"
@@ -51,10 +100,10 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
 
   test "Invalid food - No name(Only space input)" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @authorized_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
@@ -66,7 +115,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                          purchase_date: 2017-05-01,
                                          expiration_date: 2017-05-01,
                                          quantity: 1,
-                                         user_id: @user.id } }
+                                         user_id: @authorized_user.id } }
     end
     assert_template 'foods/new'
     assert_select "div.alert", text: "1 error prohibited this food from being saved:"
@@ -75,10 +124,10 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
 
   test "Invalid food - Too long name" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @authorized_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
@@ -90,7 +139,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                          purchase_date: 2017-05-01,
                                          expiration_date: 2017-05-01,
                                          quantity: 1,
-                                         user_id: @user.id } }
+                                         user_id: @authorized_user.id } }
     end
     assert_template 'foods/new'
     assert_select "div.alert", text: "1 error prohibited this food from being saved:"
@@ -99,10 +148,10 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
 
   test "Invalid food - Too long category" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @authorized_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
@@ -114,24 +163,24 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                          purchase_date: 2017-05-01,
                                          expiration_date: 2017-05-01,
                                          quantity: 1,
-                                         user_id: @user.id } }
+                                         user_id: @authorized_user.id } }
     end
     assert_template 'foods/new'
     assert_select "div.alert", text: "1 error prohibited this food from being saved:"
     assert_select "ul.alert", text: "Category is too long (maximum is 50 characters)"
   end
 
-  test "Invalid food - Unauthorized user_id" do
+  test "Invalid food - if a user try to change user_id on params" do
     pass
     # user_id is hidden from user. need test?
   end
 
   test "Invalid food - Too long category and name" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @authorized_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
@@ -154,10 +203,10 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
 
   test "Valid food" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @authorized_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
@@ -175,12 +224,49 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
   end
 
   # Test for edit
-  test "Invalid edit food - No name(Empty input) - (from the list of foods page)" do
+  test "Invalid edit food - unauthorized user can't access edit url" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @non_autho_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @non_autho_user
+    follow_redirect!
+    assert_template 'users/show'
+
+    get foods_path
+    get edit_food_path(@food)
+    follow_redirect!
+    assert_template 'index'
+    assert_select "div.alert", text: "You don't have that food!"
+  end
+
+  test "Invalid edit food - unauthorized user can't patch" do
+    get login_path
+    post login_path, params: { session: { email: @non_autho_user.email,
+                                          password: 'password' } }
+    assert is_logged_in?
+    assert_redirected_to @non_autho_user
+    follow_redirect!
+    assert_template 'users/show'
+
+    patch food_path(@food), params: { food: { category: @food.category,
+                                              name: "Berry",
+                                              purchase_date: 2017-05-01,
+                                              expiration_date: 2017-05-01,
+                                              quantity: 1,
+                                              user_id: @food.user_id
+                                               } }
+    follow_redirect!
+    assert_template 'index'
+    assert_select "div.alert", text: "You don't have that food!"
+  end
+
+  test "Invalid edit food - No name(Empty input) - (from the list of foods page)" do
+    get login_path
+    post login_path, params: { session: { email: @authorized_user.email,
+                                          password: 'password' } }
+    assert is_logged_in?
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
@@ -201,10 +287,10 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
 
   test "Invalid edit food - No name(Only space input) - (from the food show page)" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @authorized_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
@@ -225,10 +311,10 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
 
   test "Invalid edit food - name is too long" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @authorized_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
@@ -249,10 +335,10 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
 
   test "Invalid edit food - Category is too long" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @authorized_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
@@ -273,10 +359,10 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
 
   test "Invalid edit food - Category is too long and No name" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @authorized_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
@@ -300,10 +386,10 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
 
   test "Valid edit food" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @authorized_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
@@ -321,12 +407,30 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     assert_template 'index'
   end
 
-  test "Delete food - (from the list of foods page)" do
+  test "Invalid delete food - unauthorized user can't delete food" do
     get login_path
-    post login_path, params: { session: { email: @user.email,
+    post login_path, params: { session: { email: @non_autho_user.email,
                                           password: 'password' } }
     assert is_logged_in?
-    assert_redirected_to @user
+    assert_redirected_to @non_autho_user
+    follow_redirect!
+    assert_template 'users/show'
+
+    assert_no_difference 'Food.count' do
+      delete food_path(@food)
+    end
+
+    follow_redirect!
+    assert_template 'index'
+    assert_select 'div.alert', text: "You don't have that food!"
+  end
+
+  test "Delete food - (from the list of foods page)" do
+    get login_path
+    post login_path, params: { session: { email: @authorized_user.email,
+                                          password: 'password' } }
+    assert is_logged_in?
+    assert_redirected_to @authorized_user
     follow_redirect!
     assert_template 'users/show'
 
