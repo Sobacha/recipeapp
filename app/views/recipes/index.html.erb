@@ -1,32 +1,31 @@
-<% flash.each do |message_type, message| %>
-  <div class="alert alert-<%= message_type %>">
-    <%= message %>
+<%= render 'shared/flash_messages' %>
+
+<section class="recipes-wrap">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="recipes-content">
+          <h3>RECIPES</h3>
+          <div class="row photos-wrap">
+                      <!-- Instafeed target div -->
+                      <!-- The following HTML will be our template inside instafeed -->
+            <% @recipes.each do |recipe| %>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+              <div class="photo-box">
+                <div class="image-wrap">
+                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXLxTkHPItg7MvwX2G0_4xi1GdbYn-glKGrAOAHjjxcw1byMx7zQ">
+                  <!-- <div class="likes">309 Likes</div> -->
+                </div>
+                <div class="description">
+                  <div class="recipe-title"><%= recipe.title %></div>
+                  <div class="recipe-category"><%= recipe.category %></div>
+                </div>
+              </div>
+            </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-<% end %>
-
-
-<h1>Listing recipes</h1>
-
-<%= link_to 'New recipe', new_recipe_path %>
-
-<table>
-  <tr>
-    <th>Category</th>
-    <th>Title</th>
-    <th colspan="2"></th>
-  </tr>
-
-  <% @recipes.each do |recipe| %>
-    <tr>
-      <td><%= recipe.category %></td>
-      <td><%= recipe.title %></td>
-      <td><%= link_to 'Show', recipe_path(recipe) %></td>
-      <td><%= link_to 'Edit', edit_recipe_path(recipe) %></td>
-      <td><%= link_to 'Delete', recipe_path(recipe),
-              method: :delete,
-              data: { confirm: 'Are you sure?' } %></td>
-    </tr>
-  <% end %>
-</table>
-
-<%= link_to 'Home', root_path %>
+</section>

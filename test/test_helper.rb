@@ -33,7 +33,7 @@ class ActiveSupport::TestCase
     assert_template 'home'
     assert_select "div.alert", text: "Please log in."
   end
-
+  # separate them
   def unauthorized_data_error_msg(userORrecipeORfood)
     if userORrecipeORfood == "user"
       assert_template 'home'

@@ -1,2 +1,175 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+/* universal */
+body {
+  padding-top:  60px;
+}
+
+section {
+  overflow: auto;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.center {
+  text-align: center;
+}
+
+.center h1 {
+  margin-bottom: 10px;
+}
+
+/* typography */
+
+
+/* header */
+#logo {
+  float: left;
+  margin-right: 10px;
+  font-size: 1.7em;
+  color: #fff;
+  text-transform: lowercase;
+  letter-spacing: -1px;
+  padding-top: 9px;
+  font-weight: bold;
+}
+
+#logo:hover{
+  color: #fff;
+  text-decoration: none;
+}
+
+/* recipe/index cards */
+.row.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+}
+.row.no-gutters > [class^="col-"],
+.row.no-gutters > [class*=" col-"] {
+  padding-right: 0;
+  padding-left: 0;
+}
+.cell {
+  background-color: gray;
+  width: 100% !important;
+}
+
+
+
+
+// trying
+/*
+* Custom variables
+*/
+$main-font: 'Lato', sans-serif;
+$sub-font: 'Montserrat', sans-serif;
+$fancy-font: 'Kaushan Script', cursive;
+$font-size: 16px;
+
+$black: #000;
+$white: #FFF;
+$grey: #585c65;
+$mediumgrey: #9b9b9b;
+$lightgrey: #eeeeee;
+$blue: #3466a1;
+
+$padding: 10px;
+$margin: 10px;
+
+/*
+* Override Bootstrap variables
+*/
+$font-family-sans-serif: $main-font;
+
+
+* {
+    position: relative;
+    box-sizing: border-box;
+}
+
+body {
+    color: $grey;
+    font-size: $font-size;
+}
+
+
+header {
+    // max-height: 600px;
+    // height: 600px;
+    // overflow: hidden;
+}
+
+
+.recipes-wrap {
+    background: $lightgrey;
+}
+
+.recipes-content {
+    h3 {
+        text-transform: uppercase;
+        letter-spacing: 0.5em;
+        font-size: 12px;
+        font-weight: 700;
+        text-align: center;
+        padding: $padding*5 0;
+        color: darken($lightgrey, 20%);
+    }
+
+}
+
+
+
+
+
+
+
+.photo-box {
+        margin: 0 0 $margin*3 0;
+
+        .image-wrap {
+
+          position:relative;
+          overflow:hidden;
+          padding-bottom:100%;
+          background: $white;
+
+            img {
+              max-width: 100%;
+              overflow: hidden;
+              position: absolute;
+
+              top: 0;
+              right: 0;
+              bottom: 0;
+              left: 0;
+              margin: auto;
+
+            }
+
+            // .likes {
+            //     position: absolute;
+            //     bottom: 5px;
+            //     left: 15px;
+            //     padding: $padding/2;
+            //     background: $black;
+            //     background: rgba($black, 0.4);
+            //     color: $white;
+            // }
+        }
+        .description {
+            font-family: $sub-font;
+            font-size: 12px;
+            background: $white;
+            color: $mediumgrey;
+            letter-spacing: 1px;
+            padding: $padding*1.5;
+            height: 75px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    }
+// trying

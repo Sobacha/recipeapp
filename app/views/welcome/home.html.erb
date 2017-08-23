@@ -1,17 +1,16 @@
-<h1>Welcome to the Recipe app</h1>
-<p>This app is to organize your recipes and food in your fridge!
-To see recipes, click "My Recipes". To see food, click "My foods".
-</p>
+<div class="center jumbotron">
+
+  <h1>welcome to the recipe app</h1>
+
+  <h2>this app is to organize your recipes and food in your fridge!
+    to see recipes, click "recipe". to see food, click "food".
+  </h2>
 
 
-<% flash.each do |message_type, message| %>
-  <div class="alert alert-<%= message_type %>">
-    <%= message %>
-  </div>
-<% end %>
+  <% flash.each do |message_type, message| %>
+    <div class="alert alert-<%= message_type %>">
+      <%= message %>
+    </div>
+  <% end %>
 
-
-<% if !logged_in? %>
-  <li><%= link_to "Sign up now!", signup_path %></li>
-  <li><%= link_to "Log in", login_path %></li>
-<% end %>
+</div>

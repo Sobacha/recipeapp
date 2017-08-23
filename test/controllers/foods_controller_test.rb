@@ -37,8 +37,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                        name: "Tuna",
                                        purchase_date: 2017-05-01,
                                        expiration_date: 2017-05-01,
-                                       quantity: 1,
-                                       user_id: @authorized_user.id } }
+                                       quantity: 1 } }
     follow_redirect!
     assert login_error_msg
   end
@@ -53,8 +52,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                          name: "",
                                          purchase_date: 2017-05-01,
                                          expiration_date: 2017-05-01,
-                                         quantity: 1,
-                                         user_id: @authorized_user.id } }
+                                         quantity: 1 } }
     end
     assert_template 'foods/new'
     assert_select "div.alert", text: "1 error prohibited this food from being saved:"
@@ -71,8 +69,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                          name: "             ",
                                          purchase_date: 2017-05-01,
                                          expiration_date: 2017-05-01,
-                                         quantity: 1,
-                                         user_id: @authorized_user.id } }
+                                         quantity: 1 } }
     end
     assert_template 'foods/new'
     assert_select "div.alert", text: "1 error prohibited this food from being saved:"
@@ -89,8 +86,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                          name: 'a'*55,
                                          purchase_date: 2017-05-01,
                                          expiration_date: 2017-05-01,
-                                         quantity: 1,
-                                         user_id: @authorized_user.id } }
+                                         quantity: 1 } }
     end
     assert_template 'foods/new'
     assert_select "div.alert", text: "1 error prohibited this food from being saved:"
@@ -107,17 +103,11 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                          name: "Salmon",
                                          purchase_date: 2017-05-01,
                                          expiration_date: 2017-05-01,
-                                         quantity: 1,
-                                         user_id: @authorized_user.id } }
+                                         quantity: 1 } }
     end
     assert_template 'foods/new'
     assert_select "div.alert", text: "1 error prohibited this food from being saved:"
     assert_select "ul.alert", text: "Category is too long (maximum is 50 characters)"
-  end
-
-  test "Invalid food - if a user try to change user_id on params" do
-    pass
-    # user_id is hidden from user. need test?
   end
 
   test "both name and category are too long to be saved" do
@@ -168,8 +158,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                               name: "Tuna",
                                               purchase_date: 2017-05-01,
                                               expiration_date: 2017-05-01,
-                                              quantity: 1,
-                                              user_id: @authorized_user.id } }
+                                              quantity: 1 } }
     follow_redirect!
     assert login_error_msg
   end
@@ -191,9 +180,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                               name: "Berry",
                                               purchase_date: 2017-05-01,
                                               expiration_date: 2017-05-01,
-                                              quantity: 1,
-                                              user_id: @food.user_id
-                                               } }
+                                              quantity: 1 } }
     follow_redirect!
     assert unauthorized_data_error_msg("food")
   end
@@ -208,9 +195,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                               name: "",
                                               purchase_date: 2017-05-01,
                                               expiration_date: 2017-05-01,
-                                              quantity: 1,
-                                              user_id: @food.user_id
-                                               } }
+                                              quantity: 1 } }
     assert_template 'edit'
     assert_select "div.alert", text: "1 error prohibited this food from being saved:"
     assert_select "ul.alert", text: "Name can't be blank"
@@ -226,9 +211,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                               name: "        ",
                                               purchase_date: 2017-05-01,
                                               expiration_date: 2017-05-01,
-                                              quantity: 1,
-                                              user_id: @food.user_id
-                                              } }
+                                              quantity: 1 } }
     assert_template 'edit'
     assert_select "div.alert", text: "1 error prohibited this food from being saved:"
     assert_select "ul.alert", text: "Name can't be blank"
@@ -244,9 +227,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                               name: 'a'*51,
                                               purchase_date: 2017-05-01,
                                               expiration_date: 2017-05-01,
-                                              quantity: 1,
-                                              user_id: @food.user_id
-                                              } }
+                                              quantity: 1 } }
     assert_template 'edit'
     assert_select "div.alert", text: "1 error prohibited this food from being saved:"
     assert_select "ul.alert", text: "Name is too long (maximum is 50 characters)"
@@ -262,9 +243,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                               name: @food.name,
                                               purchase_date: 2017-05-01,
                                               expiration_date: 2017-05-01,
-                                              quantity: 1,
-                                              user_id: @food.user_id
-                                              } }
+                                              quantity: 1 } }
     assert_template 'edit'
     assert_select "div.alert", text: "1 error prohibited this food from being saved:"
     assert_select "ul.alert", text: "Category is too long (maximum is 50 characters)"
@@ -280,9 +259,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                               name: "",
                                               purchase_date: 2017-05-01,
                                               expiration_date: 2017-05-01,
-                                              quantity: 1,
-                                              user_id: @food.user_id
-                                              } }
+                                              quantity: 1 } }
     assert_template 'edit'
     assert_select "div.alert", text: "2 errors prohibited this food from being saved:"
     assert_select "ul.alert" do
@@ -301,9 +278,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                               name: "Fruit salad",
                                               purchase_date: 2017-05-01,
                                               expiration_date: 2017-05-01,
-                                              quantity: 1
-                                              # user_id is not passed when updated so no need to pass?
-                                                    } }
+                                              quantity: 1 } }
     follow_redirect!
     assert_template 'index'
   end

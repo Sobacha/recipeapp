@@ -1,4 +1,76 @@
-<li><%= link_to "Profile", user_path(current_user.id) %></li>
-<li><%= link_to "My recipe", controller: 'recipes' %></li>
-<li><%= link_to "My food", controller: 'foods' %></li>
-<li><%= link_to "Log out", logout_path, method: :delete %></li>
+<header class="navbar navbar-fixed-top navbar-inverse">
+  <div class="container">
+
+    <%= link_to "recipe app", root_path, id: "logo" %>
+
+    <nav>
+      <ul class="nav navbar-nav navbar-right">
+        <% if logged_in? %>
+          <!-- dropdown account menu -->
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+              <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><%= link_to current_user do %>
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+              <% end %></li>
+              <li><%= link_to edit_user_path(current_user) do %>
+                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+              <% end %></li>
+
+
+              <li><%= link_to user_path(current_user), method: :delete, data: { confirm: 'Are you sure?' } do %>
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+              <% end %></li>
+
+
+              <li class="divider"></li>
+              <li><%= link_to logout_path, method: :delete do %>
+                <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+              <% end %></li>
+            </ul>
+          </li>
+          <!-- dropdown recipe menu -->
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>
+              <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><%= link_to recipes_path do %>
+                <span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
+              <% end %></li>
+              <li><%= link_to new_recipe_path do %>
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+              <% end %></li>
+            </ul>
+          </li>
+          <!-- dropdown food menu -->
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <span class="glyphicon glyphicon-apple" aria-hidden="true"></span>
+              <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><%= link_to foods_path do %>
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+              <% end %></li>
+              <li><%= link_to new_food_path do %>
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+              <% end %></li>
+            </ul>
+          </li>
+        <% else %>
+          <li><%= link_to login_path do %>
+            <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
+          <% end %></li>
+          <li><%= link_to signup_path do %>
+            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+          <% end %></li>
+        <% end %>
+      </ul>
+    </nav>
+  </div>
+</header>

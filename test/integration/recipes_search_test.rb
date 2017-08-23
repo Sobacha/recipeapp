@@ -7,14 +7,8 @@ class RecipesSearchTest < ActionDispatch::IntegrationTest
     @food = foods(:six)
   end
 
-  test "Find proper recipes by food" do
-    get login_path
-    post login_path, params: { session: { email: @user.email,
-                                          password: 'password' } }
-    assert is_logged_in?
-    assert_redirected_to @user
-    follow_redirect!
-    assert_template 'users/show'
+  test "find proper recipes by food" do
+    assert log_in(@user)
 
     get foods_path
     assert_select "tr#5"
