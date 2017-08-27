@@ -1,4 +1,5 @@
 class RecipesController < ApplicationController
+  helper FoodsHelper
   before_action :logged_in_user
   before_action :correct_user, only:[:show, :edit, :update, :destroy]
 
@@ -50,6 +51,7 @@ class RecipesController < ApplicationController
     @food = current_user.foods.find(params[:id])
     @recipes = current_user.recipes.where("ingredients like ?", "%#{@food.name}%")
   end
+
 
   private
     def recipe_params

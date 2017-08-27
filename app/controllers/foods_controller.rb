@@ -4,6 +4,7 @@ class FoodsController < ApplicationController
 
   def index
     @foods = current_user.foods
+    @foods_ordered_by_expiration = current_user.foods.order("expiration_date ASC")
   end
 
   def new
