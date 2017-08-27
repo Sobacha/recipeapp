@@ -1,25 +1,44 @@
-<h1>Possible recipes</h1>
+<%= render 'shared/flash_messages' %>
 
-<%= link_to 'New recipe', new_recipe_path %>
 
-<table>
-  <tr>
-    <th>Category</th>
-    <th>Title</th>
-    <th colspan="2"></th>
-  </tr>
+<section class="recipes-wrap">
+  <div class="container">
 
-  <% @recipes.each do |recipe| %>
-    <tr id= <%= recipe.id %> >
-      <td><%= recipe.category %></td>
-      <td id= <%= recipe.id %> ><%= recipe.title %></td>
-      <td><%= link_to 'Show', recipe_path(recipe) %></td>
-      <td><%= link_to 'Edit', edit_recipe_path(recipe) %></td>
-      <td><%= link_to 'Destroy', recipe_path(recipe),
-              method: :delete,
-              data: { confirm: 'Are you sure?' } %></td>
-    </tr>
-  <% end %>
-</table>
+    <div class="row">
+      <div class="col-xs-12">
 
-<%= link_to 'Home', root_path %>
+        <div class="recipes-content">
+
+          <h3>RECIPE WITH</h3>
+          <h3><%= @food.name.upcase %></h3>
+
+          <div class="row photos-wrap">
+
+            <% @recipes.each do |recipe| %>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+              <div class="photo-box">
+
+                <%= link_to(recipe) do %>
+
+                <div class="image-wrap">
+                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXLxTkHPItg7MvwX2G0_4xi1GdbYn-glKGrAOAHjjxcw1byMx7zQ">
+                </div>
+                <div class="description">
+                  <div class="recipe-title" id=<%= recipe.id %>><%= recipe.title %></div>
+                  <div class="recipe-category"><%= recipe.category %></div>
+                </div>
+              </div>
+
+              <% end %>
+
+            </div>
+            <% end %>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>

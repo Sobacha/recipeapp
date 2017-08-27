@@ -41,7 +41,7 @@ five:
   category: Vegetable
   name: Spinach
   purchase_date: 2017-05-01
-  expiration_date: 2017-05-01
+  expiration_date: 2017-05-02
   quantity: 1
   user_id: 3
 
@@ -59,6 +59,6 @@ seven:
   category: Fruit
   name: Orange
   purchase_date: 2017-05-01
-  expiration_date: 2017-05-01
+  expiration_date: 2017-05-03
   quantity: 1
   user_id: 3

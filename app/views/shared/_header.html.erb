@@ -1,7 +1,7 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
   <div class="container">
 
-    <%= link_to "recipe app", root_path, id: "logo" %>
+    <%= link_to "Recipe app", root_path, id: "logo" %>
 
     <nav>
       <ul class="nav navbar-nav navbar-right">
@@ -15,20 +15,21 @@
             <ul class="dropdown-menu">
               <li><%= link_to current_user do %>
                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                account
               <% end %></li>
               <li><%= link_to edit_user_path(current_user) do %>
                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                edit
               <% end %></li>
-
-
               <li><%= link_to user_path(current_user), method: :delete, data: { confirm: 'Are you sure?' } do %>
                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                delete
               <% end %></li>
-
 
               <li class="divider"></li>
               <li><%= link_to logout_path, method: :delete do %>
                 <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+                log out
               <% end %></li>
             </ul>
           </li>
@@ -41,9 +42,11 @@
             <ul class="dropdown-menu">
               <li><%= link_to recipes_path do %>
                 <span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
+                recipe
               <% end %></li>
               <li><%= link_to new_recipe_path do %>
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                create
               <% end %></li>
             </ul>
           </li>
@@ -56,9 +59,11 @@
             <ul class="dropdown-menu">
               <li><%= link_to foods_path do %>
                 <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                food
               <% end %></li>
               <li><%= link_to new_food_path do %>
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                create
               <% end %></li>
             </ul>
           </li>

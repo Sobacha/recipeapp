@@ -31,10 +31,11 @@ textarea {
   margin-right: 10px;
   font-size: 1.7em;
   color: #fff;
-  text-transform: lowercase;
   letter-spacing: -1px;
   padding-top: 9px;
-  font-weight: bold;
+  font-family: 'Old Standard TT', serif;
+  font-weight: 700;
+  font-variant: small-caps;
 }
 
 #logo:hover{
@@ -52,10 +53,10 @@ textarea {
   padding-right: 0;
   padding-left: 0;
 }
-.cell {
-  background-color: gray;
-  width: 100% !important;
-}
+// .cell {
+//   background-color: gray;
+//   width: 100% !important;
+// }
 
 
 
@@ -97,18 +98,16 @@ body {
 
 
 header {
-    // max-height: 600px;
-    // height: 600px;
-    // overflow: hidden;
 }
 
 
-.recipes-wrap {
+.recipes-wrap, .foods-wrap, .new-wrap {
     background: $lightgrey;
 }
 
-.recipes-content {
+.recipes-content, .foods-content, .new-recipe-content, .new-food-content, .new-user-content, .edit-user-content, .edit-food-content, .edit-recipe-content, .login-content, .show-user-content, .show-recipe-content {
     h3 {
+        font-family: 'Raleway', sans-serif;
         text-transform: uppercase;
         letter-spacing: 0.5em;
         font-size: 12px;
@@ -119,10 +118,23 @@ header {
     }
 
 }
-
-
-
-
+.home-content {
+  h2 {
+      font-family: 'Raleway', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.5em;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+      padding: $padding*5 0;
+      color: darken($lightgrey, 20%);
+    }
+  h3 {
+    font-family: 'Raleway', sans-serif;
+    text-transform: lowercase;
+    font-weight: bold;
+  }
+}
 
 
 
@@ -137,7 +149,7 @@ header {
           background: $white;
 
             img {
-              max-width: 100%;
+              width: 100%;
               overflow: hidden;
               position: absolute;
 
@@ -149,18 +161,9 @@ header {
 
             }
 
-            // .likes {
-            //     position: absolute;
-            //     bottom: 5px;
-            //     left: 15px;
-            //     padding: $padding/2;
-            //     background: $black;
-            //     background: rgba($black, 0.4);
-            //     color: $white;
-            // }
         }
         .description {
-            font-family: $sub-font;
+            // font-family: $sub-font;
             font-size: 12px;
             background: $white;
             color: $mediumgrey;
@@ -173,3 +176,26 @@ header {
         }
     }
 // trying
+.list-inline {
+  background-color: $white;
+  // text-align: center;
+}
+.icon-right {
+  float: right;
+}
+
+.recipe-title, .food-name {
+  text-transform: uppercase;
+  font-family: 'Raleway', sans-serif;
+}
+.recipe-category, .food-quantity, .food-expiration {
+  text-transform: lowercase;
+  font-family: 'Lora', serif;
+}
+.control-label {
+  text-transform: lowercase;
+  font-family: $main-font;
+}
+.form-control-static {
+  // background-color: $white
+}

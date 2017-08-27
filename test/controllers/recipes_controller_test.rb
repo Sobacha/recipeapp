@@ -74,7 +74,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                              user_id: @authorized_user.id } }
     end
     assert_template 'recipes/new'
-    assert_select "div.alert", text: "1 error prohibited this recipe from being saved:"
+    assert_select "div.alert", text: "The form contains 1 error."
     assert_select "ul.alert", text: "Title can't be blank"
   end
 
@@ -92,7 +92,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                              user_id: @authorized_user.id } }
     end
     assert_template 'recipes/new'
-    assert_select "div.alert", text: "1 error prohibited this recipe from being saved:"
+    assert_select "div.alert", text: "The form contains 1 error."
     assert_select "ul.alert", text: "Title can't be blank"
   end
 
@@ -110,7 +110,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                              user_id: @authorized_user.id } }
     end
     assert_template 'recipes/new'
-    assert_select "div.alert", text: "1 error prohibited this recipe from being saved:"
+    assert_select "div.alert", text: "The form contains 1 error."
     assert_select "ul.alert", text: "Title is too long (maximum is 50 characters)"
   end
 
@@ -128,7 +128,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                              user_id: @authorized_user.id } }
     end
     assert_template 'recipes/new'
-    assert_select "div.alert", text: "1 error prohibited this recipe from being saved:"
+    assert_select "div.alert", text: "The form contains 1 error."
     assert_select "ul.alert", text: "Category is too long (maximum is 50 characters)"
   end
 
@@ -147,7 +147,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                              user_id: @recipe.user_id } }
     end
     assert_template 'recipes/new'
-    assert_select "div.alert", text: "2 errors prohibited this recipe from being saved:"
+    assert_select "div.alert", text: "The form contains 2 errors."
     assert_select "ul.alert" do
       assert_select "li", 2
       # how to test actual msg is correct?
@@ -224,7 +224,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                                     url: @recipe.url,
                                                     user_id: @recipe.user_id } }
     assert_template 'edit'
-    assert_select "div.alert", text: "1 error prohibited this recipe from being saved:"
+    assert_select "div.alert", text: "The form contains 1 error."
     assert_select "ul.alert", text: "Title can't be blank"
   end
 
@@ -242,7 +242,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                                     url: @recipe.url,
                                                     user_id: @recipe.user_id } }
     assert_template 'edit'
-    assert_select "div.alert", text: "1 error prohibited this recipe from being saved:"
+    assert_select "div.alert", text: "The form contains 1 error."
     assert_select "ul.alert", text: "Title can't be blank"
   end
 
@@ -259,7 +259,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                                     url: @recipe.url,
                                                     user_id: @recipe.user_id } }
     assert_template 'edit'
-    assert_select "div.alert", text: "1 error prohibited this recipe from being saved:"
+    assert_select "div.alert", text: "The form contains 1 error."
     assert_select "ul.alert", text: "Title is too long (maximum is 50 characters)"
   end
 
@@ -276,7 +276,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                                     url: @recipe.url,
                                                     user_id: @recipe.user_id } }
     assert_template 'edit'
-    assert_select "div.alert", text: "1 error prohibited this recipe from being saved:"
+    assert_select "div.alert", text: "The form contains 1 error."
     assert_select "ul.alert", text: "Category is too long (maximum is 50 characters)"
   end
 
@@ -293,7 +293,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                                     url: @recipe.url,
                                                     user_id: @recipe.user_id } }
     assert_template 'edit'
-    assert_select "div.alert", text: "2 errors prohibited this recipe from being saved:"
+    assert_select "div.alert", text: "The form contains 2 errors."
     assert_select "ul.alert" do
       assert_select "li", 2
       # how to test actual msg is correct?

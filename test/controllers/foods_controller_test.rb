@@ -55,7 +55,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                          quantity: 1 } }
     end
     assert_template 'foods/new'
-    assert_select "div.alert", text: "1 error prohibited this food from being saved:"
+    assert_select "div.alert", text: "The form contains 1 error."
     assert_select "ul.alert", text: "Name can't be blank"
   end
 
@@ -72,7 +72,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                          quantity: 1 } }
     end
     assert_template 'foods/new'
-    assert_select "div.alert", text: "1 error prohibited this food from being saved:"
+    assert_select "div.alert", text: "The form contains 1 error."
     assert_select "ul.alert", text: "Name can't be blank"
   end
 
@@ -89,7 +89,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                          quantity: 1 } }
     end
     assert_template 'foods/new'
-    assert_select "div.alert", text: "1 error prohibited this food from being saved:"
+    assert_select "div.alert", text: "The form contains 1 error."
     assert_select "ul.alert", text: "Name is too long (maximum is 50 characters)"
   end
 
@@ -106,7 +106,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                          quantity: 1 } }
     end
     assert_template 'foods/new'
-    assert_select "div.alert", text: "1 error prohibited this food from being saved:"
+    assert_select "div.alert", text: "The form contains 1 error."
     assert_select "ul.alert", text: "Category is too long (maximum is 50 characters)"
   end
 
@@ -123,7 +123,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                          quantity: 1 } }
     end
     assert_template 'foods/new'
-    assert_select "div.alert", text: "2 errors prohibited this food from being saved:"
+    assert_select "div.alert", text: "The form contains 2 errors."
     assert_select "ul.alert" do
       assert_select "li", 2
       # how to test actual msg is correct?
@@ -197,7 +197,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                               expiration_date: 2017-05-01,
                                               quantity: 1 } }
     assert_template 'edit'
-    assert_select "div.alert", text: "1 error prohibited this food from being saved:"
+    assert_select "div.alert", text: "The form contains 1 error."
     assert_select "ul.alert", text: "Name can't be blank"
   end
 
@@ -213,7 +213,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                               expiration_date: 2017-05-01,
                                               quantity: 1 } }
     assert_template 'edit'
-    assert_select "div.alert", text: "1 error prohibited this food from being saved:"
+    assert_select "div.alert", text: "The form contains 1 error."
     assert_select "ul.alert", text: "Name can't be blank"
   end
 
@@ -229,7 +229,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                               expiration_date: 2017-05-01,
                                               quantity: 1 } }
     assert_template 'edit'
-    assert_select "div.alert", text: "1 error prohibited this food from being saved:"
+    assert_select "div.alert", text: "The form contains 1 error."
     assert_select "ul.alert", text: "Name is too long (maximum is 50 characters)"
   end
 
@@ -245,7 +245,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                               expiration_date: 2017-05-01,
                                               quantity: 1 } }
     assert_template 'edit'
-    assert_select "div.alert", text: "1 error prohibited this food from being saved:"
+    assert_select "div.alert", text: "The form contains 1 error."
     assert_select "ul.alert", text: "Category is too long (maximum is 50 characters)"
   end
 
@@ -261,7 +261,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
                                               expiration_date: 2017-05-01,
                                               quantity: 1 } }
     assert_template 'edit'
-    assert_select "div.alert", text: "2 errors prohibited this food from being saved:"
+    assert_select "div.alert", text: "The form contains 2 errors."
     assert_select "ul.alert" do
       assert_select "li", 2
       # how to test actual msg is correct?

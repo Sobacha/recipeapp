@@ -1,31 +1,67 @@
-<p>
-  <strong>Category:</strong>
-  <%= @recipe.category %>
-</p>
+<%= render 'shared/flash_messages' %>
 
-<p>
-  <strong>Title:</strong>
-  <%= @recipe.title %>
-</p>
+<section class="new-wrap">
+  <div class="container">
 
-<p>
-  <strong>Ingredients:</strong>
-  <%= @recipe.ingredients %>
-</p>
+    <div class="row">
+      <div class="col-xs-12">
 
-<p>
-  <strong>Direction:</strong>
-  <%= @recipe.direction %>
-</p>
+        <div class="show-recipe-content">
 
-<p>
-  <strong>Url:</strong>
-  <%= @recipe.url %>
-</p>
+          <h3><%= @recipe.title %></h3>
+          <h3><%= @recipe.category %></h3>
 
-<%= link_to 'Edit', edit_recipe_path(@recipe) %> |
-<%= link_to 'Delete', recipe_path(@recipe),
-        method: :delete,
-        data: { confirm: 'Are you sure?' } %> |
-<%= link_to 'Back', recipes_path %>
-<%= link_to 'Home', root_path %>
+
+          <form class="form-horizontal">
+            <!-- <div class="form-group">
+              <label class="col-sm-2 control-label">Category</label>
+              <div class="col-sm-10">
+                <p class="form-control-static"><%= @recipe.category %></p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Title</label>
+              <div class="col-sm-10">
+                <p class="form-control-static"><%= @recipe.title %></p>
+              </div>
+            </div> -->
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Ingredients</label>
+              <div class="col-sm-10">
+                <p class="form-control-static"><%= @recipe.ingredients %></p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Direction</label>
+              <div class="col-sm-10">
+                <p class="form-control-static"><%= @recipe.direction %></p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">URL</label>
+              <div class="col-sm-10">
+                <p class="form-control-static"><%= @recipe.url %></p>
+              </div>
+            </div>
+          </form>
+          <!-- icon -->
+          <ul class="list-inline">
+            <li class="icon-right">
+              <div>
+                <%= link_to edit_recipe_path(@recipe) do %>
+                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                <% end %>
+                <%= link_to recipe_path(@recipe), method: :delete, data: { confirm: 'Are you sure?' } do %>
+                  <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                <% end %>
+              </div>
+            </li>
+          </ul>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>

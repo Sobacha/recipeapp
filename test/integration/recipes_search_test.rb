@@ -11,20 +11,14 @@ class RecipesSearchTest < ActionDispatch::IntegrationTest
     assert log_in(@user)
 
     get foods_path
-    assert_select "tr#5"
-    assert_select "td#5", text: "Spinach"
-    assert_select "tr#6"
-    assert_select "td#6", text: "Tofu"
-    assert_select "tr#7"
-    assert_select "td#7", text: "Orange"
+    assert_select "div#6.food-name", text: "Tofu"
+    assert_select "div#5.food-name", text: "Spinach"
+    assert_select "div#7.food-name", text: "Orange"
 
     get "/recipes/search/Tofu?id=6"
-    assert_select "tr#4"
-    assert_select "td#4", text: "Mabo Tofu"
-    assert_select "tr#6"
-    assert_select "td#6", text: "Hiyayakko"
-    assert_select "tr#7"
-    assert_select "td#7", text: "Teriyaki tofu"
+    assert_select "div#4", text: "Mabo Tofu"
+    assert_select "div#6", text: "Hiyayakko"
+    assert_select "div#7", text: "Teriyaki tofu"
   end
 
 end

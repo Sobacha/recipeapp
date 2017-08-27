@@ -1,41 +1,59 @@
-<% flash.each do |message_type, message| %>
-  <div class="alert alert-<%= message_type %>">
-    <%= message %>
+<%= render 'shared/flash_messages' %>
+
+
+<section class="foods-wrap">
+  <div class="container">
+
+    <div class="row">
+      <div class="col-xs-12">
+
+        <div class="foods-content">
+
+          <h3>FOOD</h3>
+
+          <div class="row food-wrap">
+
+            <% @foods_ordered_by_expiration.each do |food| %>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+              <ul class="list-inline">
+                <li>
+                  <div class="food-info">
+                    <div class="food-name" id= <%= food.id %>><%= food.name %></div>
+                    <div class="food-quantity"><%= food.quantity %></div>
+                    <div class="food-expiration"><%= food.expiration_date %></div>
+                  </div>
+                </li>
+
+                <li class="icon-right">
+                  <div>
+                    <% if possible_recipe(food) %>
+                      <%= link_to controller: 'recipes', action: 'search', id: food.id, name: food.name do %>
+                        <span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
+                      <% end %>
+                    <% else %>
+                      <span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
+                    <% end %>
+                  </div>
+                  <div>
+                    <%= link_to edit_food_path(food) do %>
+                      <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    <% end %>
+                  </div>
+                  <div>
+                    <%= link_to food_path(food), method: :delete, data: { confirm: 'Are you sure?' } do %>
+                      <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    <% end %>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <% end %>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
   </div>
-<% end %>
-
-
-<h1>Listing foods</h1>
-
-<%= link_to 'New food', new_food_path %>
-
-<table>
-  <tr>
-    <th>Category</th>
-    <th>Name</th>
-    <th>Purchase date</th>
-    <th>Expiration date</th>
-    <th>Quantity</th>
-    <th colspan="2"></th>
-  </tr>
-
-  <% if @foods.any? %>
-    <% @foods.each do |food| %>
-      <tr id= <%= food.id %> >
-        <td><%= food.category %></td>
-        <td id= <%= food.id %> ><%= food.name %></td>
-        <td><%= food.purchase_date %></td>
-        <td><%= food.expiration_date %></td>
-        <td><%= food.quantity %></td>
-        <td><%= link_to 'Recipes with this',
-                controller: 'recipes', action: 'search', id: food.id, name: food.name %></td>
-        <td><%= link_to 'Edit', edit_food_path(food) %></td>
-        <td><%= link_to 'Destroy', food_path(food),
-                method: :delete,
-                data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  <% end %>
-</table>
-
-<%= link_to 'Home', root_path %>
+</section>
