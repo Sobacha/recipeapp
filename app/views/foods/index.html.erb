@@ -1,10 +1,13 @@
+<!-- flash msg from correct_user method in food controller -->
 <%= render 'shared/flash_messages' %>
 
-
+<!-- <body> in layouts/application.html.erb -->
 <section class="foods-wrap">
+
   <div class="container">
 
     <div class="row">
+
       <div class="col-xs-12">
 
         <div class="foods-content">
@@ -14,46 +17,99 @@
           <div class="row food-wrap">
 
             <% @foods_ordered_by_expiration.each do |food| %>
-            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-              <ul class="list-inline">
-                <li>
-                  <div class="food-info">
-                    <div class="food-name" id= <%= food.id %>><%= food.name %></div>
-                    <div class="food-quantity"><%= food.quantity %></div>
-                    <div class="food-expiration"><%= food.expiration_date %></div>
-                  </div>
-                </li>
 
-                <li class="icon-right">
-                  <div>
-                    <% if possible_recipe(food) %>
-                      <%= link_to controller: 'recipes', action: 'search', id: food.id, name: food.name do %>
+              <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+
+                <ul class="food-info">
+                  <div class="text-info">
+                    <li class="food-name" id= <%= food.id %>><%= food.name %></li>
+                    <li class="food-quantity">
+                      <% if !food.quantity.nil? %>
+                        <%= food.quantity %>
+                      <% else %>
+                        &nbsp;
+                      <% end %>
+                    </li>
+                    <li class="food-expiration"><%= food.expiration_date %></li>
+                  </div>
+
+                  <div class="icon-panel">
+                    <li>
+                      <% if possible_recipe(food) %>
+                        <%= link_to controller: 'recipes', action: 'search', id: food.id, name: food.name do %>
+                          <span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
+                        <% end %>
+                      <% else %>
                         <span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
                       <% end %>
-                    <% else %>
-                      <span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
-                    <% end %>
+
+                      &nbsp;&nbsp;
+
+                      <%= link_to edit_food_path(food) do %>
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                      <% end %>
+
+                      &nbsp;&nbsp;
+
+                      <%= link_to food_path(food), method: :delete, data: { confirm: 'Are you sure?' } do %>
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                      <% end %>
+                    </li>
                   </div>
-                  <div>
-                    <%= link_to edit_food_path(food) do %>
-                      <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                    <% end %>
-                  </div>
-                  <div>
-                    <%= link_to food_path(food), method: :delete, data: { confirm: 'Are you sure?' } do %>
-                      <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                    <% end %>
-                  </div>
-                </li>
-              </ul>
-            </div>
+                </ul>
+
+                <!-- <ul class="list-inline">
+
+                  <li class="food-info">
+                    <div>
+                      <div class="food-name" id= <%= food.id %>><%= food.name %></div>
+                      <div class="food-quantity">
+                        <% if !food.quantity.nil? %>
+                          <%= food.quantity %>
+                        <% else %>
+                          &nbsp;
+                        <% end %>
+                      </div>
+                      <div class="food-expiration"><%= food.expiration_date %></div>
+                    </div>
+                  </li>
+
+                  <li class="icon-right">
+                    <div>
+                      <% if possible_recipe(food) %>
+                        <%= link_to controller: 'recipes', action: 'search', id: food.id, name: food.name do %>
+                          <span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
+                        <% end %>
+                      <% else %>
+                        <span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
+                      <% end %>
+                    </div>
+                    <div>
+                      <%= link_to edit_food_path(food) do %>
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                      <% end %>
+                    </div>
+                    <div>
+                      <%= link_to food_path(food), method: :delete, data: { confirm: 'Are you sure?' } do %>
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                      <% end %>
+                    </div>
+                  </li>
+
+                </ul> -->
+
+              </div>
+
             <% end %>
 
           </div>
 
         </div>
+
       </div>
+
     </div>
 
   </div>
+
 </section>

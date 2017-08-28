@@ -1,9 +1,10 @@
-<%= render 'shared/flash_messages' %>
-
+<!-- <body> in layouts/application.html.erb -->
 <section class="new-wrap">
+
   <div class="container">
 
     <div class="row">
+
       <div class="col-xs-12">
 
         <div class="show-recipe-content">
@@ -11,57 +12,55 @@
           <h3><%= @recipe.title %></h3>
           <h3><%= @recipe.category %></h3>
 
-
           <form class="form-horizontal">
-            <!-- <div class="form-group">
-              <label class="col-sm-2 control-label">Category</label>
-              <div class="col-sm-10">
-                <p class="form-control-static"><%= @recipe.category %></p>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-2 control-label">Title</label>
-              <div class="col-sm-10">
-                <p class="form-control-static"><%= @recipe.title %></p>
-              </div>
-            </div> -->
+
             <div class="form-group">
               <label class="col-sm-2 control-label">Ingredients</label>
               <div class="col-sm-10">
                 <p class="form-control-static"><%= @recipe.ingredients %></p>
               </div>
             </div>
+
             <div class="form-group">
               <label class="col-sm-2 control-label">Direction</label>
               <div class="col-sm-10">
                 <p class="form-control-static"><%= @recipe.direction %></p>
               </div>
             </div>
+
             <div class="form-group">
               <label class="col-sm-2 control-label">URL</label>
               <div class="col-sm-10">
                 <p class="form-control-static"><%= @recipe.url %></p>
               </div>
             </div>
+
           </form>
+
           <!-- icon -->
           <ul class="list-inline">
+
             <li class="icon-right">
+
               <div>
                 <%= link_to edit_recipe_path(@recipe) do %>
-                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                  <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                 <% end %>
                 <%= link_to recipe_path(@recipe), method: :delete, data: { confirm: 'Are you sure?' } do %>
                   <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                 <% end %>
               </div>
+
             </li>
+
           </ul>
 
         </div>
 
       </div>
+
     </div>
 
   </div>
+
 </section>

@@ -1,10 +1,10 @@
-<%= render 'shared/flash_messages' %>
-
-
+<!-- <body> in layouts/application.html.erb -->
 <section class="recipes-wrap">
+
   <div class="container">
 
     <div class="row">
+
       <div class="col-xs-12">
 
         <div class="recipes-content">
@@ -15,30 +15,38 @@
           <div class="row photos-wrap">
 
             <% @recipes.each do |recipe| %>
-            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-              <div class="photo-box">
 
-                <%= link_to(recipe) do %>
+              <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 
-                <div class="image-wrap">
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXLxTkHPItg7MvwX2G0_4xi1GdbYn-glKGrAOAHjjxcw1byMx7zQ">
+                <div class="photo-box">
+
+                  <%= link_to(recipe) do %>
+
+                    <div class="image-wrap">
+                      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXLxTkHPItg7MvwX2G0_4xi1GdbYn-glKGrAOAHjjxcw1byMx7zQ">
+                    </div>
+
+                    <div class="description">
+                      <div class="recipe-title" id=<%= recipe.id %>><%= recipe.title %></div>
+                      <div class="recipe-category"><%= recipe.category %></div>
+                    </div>
+
+                  <% end %>
+
                 </div>
-                <div class="description">
-                  <div class="recipe-title" id=<%= recipe.id %>><%= recipe.title %></div>
-                  <div class="recipe-category"><%= recipe.category %></div>
-                </div>
+
               </div>
 
-              <% end %>
-
-            </div>
             <% end %>
 
           </div>
+
         </div>
 
       </div>
+
     </div>
 
   </div>
+
 </section>

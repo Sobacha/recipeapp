@@ -199,3 +199,10 @@ header {
 .form-control-static {
   // background-color: $white
 }
+.food-info {
+  list-style: none;
+  background-color: $white;
+  text-align: center;
+  padding: 0;
+  // overflow: hidden;
+}

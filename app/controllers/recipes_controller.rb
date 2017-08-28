@@ -1,7 +1,7 @@
 class RecipesController < ApplicationController
-  helper FoodsHelper
+  helper FoodsHelper  # to use methods in controllers/helpers/foods_helper.rb
   before_action :logged_in_user
-  before_action :correct_user, only:[:show, :edit, :update, :destroy]
+  before_action :correct_user, only:[:show, :edit, :update, :destroy, :search]
 
   def index
     @recipes = current_user.recipes
