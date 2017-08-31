@@ -1,7 +1,7 @@
 class RecipesController < ApplicationController
   helper FoodsHelper  # to use methods in controllers/helpers/foods_helper.rb
   before_action :logged_in_user
-  before_action :correct_user, only:[:show, :edit, :update, :destroy, :search]
+  before_action :correct_user, only:[:show, :edit, :update, :destroy]
 
   def index
     @recipes = current_user.recipes
@@ -48,8 +48,13 @@ class RecipesController < ApplicationController
   end
 
   def search
-    @food = current_user.foods.find(params[:id])
-    @recipes = current_user.recipes.where("ingredients like ?", "%#{@food.name}%")
+    begin
+      @food = current_user.foods.find(params[:id])
+      @recipes = current_user.recipes.where("ingredients like ?", "%#{@food.name}%")
+    rescue ActiveRecord::RecordNotFound
+      flash[:danger] = "You don't have that food!"
+      redirect_to foods_path
+    end
   end
 
 
@@ -58,7 +63,7 @@ class RecipesController < ApplicationController
       params.require(:recipe).permit(:category, :title, :ingredients, :direction, :url)
     end
 
-    # Confirms the correct user.
+    # Confirms the correct user, shows nice error page if not
     def correct_user
       begin
         @recipe = current_user.recipes.find(params[:id])

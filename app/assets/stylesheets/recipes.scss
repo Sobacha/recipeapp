@@ -1,3 +1,77 @@
 // Place all the styles related to the Recipes controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+@import "shared/variables";
+
+.recipe-head {
+  text-align: center;
+  margin: 2em;
+
+  .recipe-title {
+    font-size: 18px;
+  }
+
+  .recipe-category {
+    font-size: 15px;
+  }
+}
+
+.recipe-category {
+  overflow: hidden;
+  text-transform: capitalize;
+  font-family: $classic-font;
+}
+
+.recipe-title {
+  overflow: hidden;
+  text-transform: uppercase;
+  font-family: $main-font;
+}
+
+.recipe-icon-right {
+  list-style: none;
+  float: right;
+}
+
+.recipe-box {
+  margin: 0 0 $margin*3 0;
+
+  .image-wrap {
+    position:relative;
+    overflow:hidden;
+    padding-bottom:100%;
+    background: $white;
+
+      img {
+        width: 100%;
+        overflow: hidden;
+        position: absolute;
+
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+      }
+  }
+
+  .recipe-description {
+      background: $white;
+      color: $grey;
+      letter-spacing: 1px;
+      padding: $padding*1.5;
+      height: 75px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
+      .recipe-category {
+        font-size: 12px;
+      }
+
+      .recipe-title {
+        font-size: 13px;
+      }
+  }
+}

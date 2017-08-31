@@ -2,18 +2,17 @@
 
   <div id="error_explanation" class="alert alert-danger" role="alert">
 
-    <div>
+    <div class="error-main">
       The form contains <%= pluralize(object.errors.count, "error") %>.
-
-      <ul>
-
-        <% object.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-
-      </ul>
-
     </div>
+
+    <ul class="error-content">
+
+      <% object.errors.full_messages.each_with_index do |msg, index| %>
+        <li id=<%= index %>><%= msg %></li>
+      <% end %>
+
+    </ul>
 
   </div>
 

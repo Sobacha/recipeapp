@@ -5,6 +5,12 @@ class FoodsController < ApplicationController
   def index
     @foods = current_user.foods
     @foods_ordered_by_expiration = current_user.foods.order("expiration_date ASC")
+    @grain_ordered_by_expiration = current_user.foods.where("category = ?", 'Grain').order("expiration_date ASC")
+    @meat_ordered_by_expiration = current_user.foods.where("category = ?", 'Meat').order("expiration_date ASC")
+    @fat_ordered_by_expiration = current_user.foods.where("category = ?", 'Fat').order("expiration_date ASC")
+    @vegetable_ordered_by_expiration = current_user.foods.where("category = ?", 'Vegetable').order("expiration_date ASC")
+    @fruit_ordered_by_expiration = current_user.foods.where("category = ?", 'Fruit').order("expiration_date ASC")
+    @other_ordered_by_expiration = current_user.foods.where("category = ?", 'Other').order("expiration_date ASC")
   end
 
   def new

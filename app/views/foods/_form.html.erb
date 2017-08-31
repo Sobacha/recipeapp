@@ -1,16 +1,18 @@
+<!-- error msg about object validation -->
+<%= render 'shared/error_messages', object: @food %>
+
+
+<!-- bootstrap horizontal form -->
 <%= form_for @food, {:html => {:class => "form-horizontal"}} do |f| %>
 
-  <!-- error msg about object validation -->
-  <%= render 'shared/error_messages', object: @food %>
-
-  <!-- bootstrap horizontal form -->
-  <div class="new-form">
+  <div class="new-food-form">
 
     <!-- category -->
     <div class="form-group">
       <%= f.label :category, class: "col-sm-2 control-label" %>
       <div class="col-sm-10">
-        <%= f.text_field :category, class: "form-control" %>
+        <%= f.select(:category, options_for_select([['Grain'], ['Meat'], ['Fat'], ['Vegetable'], ['Fruit'], ['Other']],
+                     :selected => f.object.category), {}, {class: "form-control"}) %>
       </div>
     </div>
 
@@ -52,7 +54,7 @@
         <%= f.submit 'Save', class: 'btn btn-default' %>
       </div>
     </div>
-    
+
   </div>
 
 <% end %>

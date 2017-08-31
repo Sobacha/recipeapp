@@ -8,13 +8,27 @@
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <!-- google font -->
-    <link href="https://fonts.googleapis.com/css?family=Lato:300|Raleway|Cormorant+SC:400,500,600|Lora:400,600|Montserrat:400,700i|Cinzel:400,700|Old+Standard+TT:700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300|Raleway|Lora:400,600|Old+Standard+TT:700" rel="stylesheet">
 
   </head>
 
   <body>
     <%= render 'shared/header' %>
-    <%= yield %>
+
+    <section class="wrap">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="content">
+
+              <%= yield %>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </body>
 
 </html>

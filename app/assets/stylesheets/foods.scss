@@ -1,3 +1,50 @@
 // Place all the styles related to the Foods controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+@import "shared/variables";
+
+
+.food-text-info {
+  word-wrap: break-word !important;
+}
+
+.food-name {
+  text-transform: uppercase;
+  font-family: $main-font;
+}
+.food-category, .food-quantity, .food-expiration {
+  text-transform: lowercase;
+  font-family: $classic-font;
+}
+.food-description {
+  list-style: none;
+  background-color: $white;
+  text-align: center;
+  padding: 0;
+  // overflow: hidden;
+}
+
+/*nav tab*/
+.nav-tabs {
+
+  a{
+    font-family: $sub-font !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.2em !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    color: $grey !important;
+  }
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  background-color: $lightgrey !important;
+  border-bottom-color: $lightgrey !important;
+}
+.tab-content {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}

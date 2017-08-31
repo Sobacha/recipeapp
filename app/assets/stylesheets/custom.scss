@@ -1,9 +1,56 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+@import "shared/variables";
+
+
 /* universal */
+
+* {
+  position: relative; // no surprises when using absolutely positioned elements
+  box-sizing: border-box; // we can use percentage widths and not worry about any padding the element has influencing the layout
+}
+
 body {
   padding-top:  60px;
+  color: $grey;
+  font-size: $font-size;
+
+  .wrap {
+    background: $lightgrey;
+  }
+
+  .content {
+    h3 {
+      font-family: $sub-font;
+      text-transform: uppercase;
+      letter-spacing: 0.5em;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+      padding: $padding*5 0;
+      color: darken($lightgrey, 20%);
+    }
+
+    h2 {
+      font-family: $main-font;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      font-size: 12px;
+      font-weight: 700;
+      // text-align: center;
+      padding: $padding*5 0;
+      color: $grey;
+
+      .glyphicon {
+        font-size: 15px;
+      }
+    }
+
+    h2 > ul li {
+      list-style: none;
+    }
+  }
 }
 
 section {
@@ -14,195 +61,34 @@ textarea {
   resize: vertical;
 }
 
-.center {
-  text-align: center;
-}
-
-.center h1 {
-  margin-bottom: 10px;
-}
-
-/* typography */
-
 
 /* header */
 #logo {
   float: left;
   margin-right: 10px;
   font-size: 1.7em;
-  color: #fff;
+  color: $white;
   letter-spacing: -1px;
   padding-top: 9px;
-  font-family: 'Old Standard TT', serif;
+  font-family: $logo-font;
   font-weight: 700;
   font-variant: small-caps;
 }
 
 #logo:hover{
-  color: #fff;
+  color: $white;
   text-decoration: none;
 }
 
-/* recipe/index cards */
-.row.no-gutters {
-  margin-right: 0;
-  margin-left: 0;
-}
-.row.no-gutters > [class^="col-"],
-.row.no-gutters > [class*=" col-"] {
-  padding-right: 0;
-  padding-left: 0;
-}
-// .cell {
-//   background-color: gray;
-//   width: 100% !important;
-// }
 
-
-
-
-// trying
-/*
-* Custom variables
-*/
-$main-font: 'Lato', sans-serif;
-$sub-font: 'Montserrat', sans-serif;
-$fancy-font: 'Kaushan Script', cursive;
-$font-size: 16px;
-
-$black: #000;
-$white: #FFF;
-$grey: #585c65;
-$mediumgrey: #9b9b9b;
-$lightgrey: #eeeeee;
-$blue: #3466a1;
-
-$padding: 10px;
-$margin: 10px;
-
-/*
-* Override Bootstrap variables
-*/
-$font-family-sans-serif: $main-font;
-
-
-* {
-    position: relative;
-    box-sizing: border-box;
-}
-
-body {
-    color: $grey;
-    font-size: $font-size;
-}
-
-
-header {
-}
-
-
-.recipes-wrap, .foods-wrap, .new-wrap {
-    background: $lightgrey;
-}
-
-.recipes-content, .foods-content, .new-recipe-content, .new-food-content, .new-user-content, .edit-user-content, .edit-food-content, .edit-recipe-content, .login-content, .show-user-content, .show-recipe-content {
-    h3 {
-        font-family: 'Raleway', sans-serif;
-        text-transform: uppercase;
-        letter-spacing: 0.5em;
-        font-size: 12px;
-        font-weight: 700;
-        text-align: center;
-        padding: $padding*5 0;
-        color: darken($lightgrey, 20%);
-    }
-
-}
-.home-content {
-  h2 {
-      font-family: 'Raleway', sans-serif;
-      text-transform: uppercase;
-      letter-spacing: 0.5em;
-      font-size: 12px;
-      font-weight: 700;
-      text-align: center;
-      padding: $padding*5 0;
-      color: darken($lightgrey, 20%);
-    }
-  h3 {
-    font-family: 'Raleway', sans-serif;
-    text-transform: lowercase;
-    font-weight: bold;
-  }
-}
-
-
-
-.photo-box {
-        margin: 0 0 $margin*3 0;
-
-        .image-wrap {
-
-          position:relative;
-          overflow:hidden;
-          padding-bottom:100%;
-          background: $white;
-
-            img {
-              width: 100%;
-              overflow: hidden;
-              position: absolute;
-
-              top: 0;
-              right: 0;
-              bottom: 0;
-              left: 0;
-              margin: auto;
-
-            }
-
-        }
-        .description {
-            // font-family: $sub-font;
-            font-size: 12px;
-            background: $white;
-            color: $mediumgrey;
-            letter-spacing: 1px;
-            padding: $padding*1.5;
-            height: 75px;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-        }
-    }
-// trying
-.list-inline {
-  background-color: $white;
-  // text-align: center;
-}
-.icon-right {
-  float: right;
-}
-
-.recipe-title, .food-name {
-  text-transform: uppercase;
-  font-family: 'Raleway', sans-serif;
-}
-.recipe-category, .food-quantity, .food-expiration {
-  text-transform: lowercase;
-  font-family: 'Lora', serif;
-}
+/*form*/
+/*label in form*/
 .control-label {
-  text-transform: lowercase;
+  text-transform: capitalize;
+  font-weight: normal !important;
   font-family: $main-font;
 }
+/*text in textarea*/
 .form-control-static {
-  // background-color: $white
-}
-.food-info {
-  list-style: none;
-  background-color: $white;
-  text-align: center;
-  padding: 0;
-  // overflow: hidden;
+  word-wrap: break-word !important;
 }

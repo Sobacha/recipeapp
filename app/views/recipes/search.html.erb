@@ -1,52 +1,36 @@
 <!-- <body> in layouts/application.html.erb -->
-<section class="recipes-wrap">
+<h3>
+  RECIPE
+  <br></br><font style="text-transform: lowercase;">with</font><br></br>
+  <%= @food.name.upcase %>
+</h3>
 
-  <div class="container">
 
-    <div class="row">
+<div class="row recipes-wrap">
 
-      <div class="col-xs-12">
+  <% @recipes.each do |recipe| %>
 
-        <div class="recipes-content">
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 
-          <h3>RECIPE WITH</h3>
-          <h3><%= @food.name.upcase %></h3>
+      <div class="recipe-box">
 
-          <div class="row photos-wrap">
+        <%= link_to(recipe) do %>
 
-            <% @recipes.each do |recipe| %>
-
-              <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-
-                <div class="photo-box">
-
-                  <%= link_to(recipe) do %>
-
-                    <div class="image-wrap">
-                      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXLxTkHPItg7MvwX2G0_4xi1GdbYn-glKGrAOAHjjxcw1byMx7zQ">
-                    </div>
-
-                    <div class="description">
-                      <div class="recipe-title" id=<%= recipe.id %>><%= recipe.title %></div>
-                      <div class="recipe-category"><%= recipe.category %></div>
-                    </div>
-
-                  <% end %>
-
-                </div>
-
-              </div>
-
-            <% end %>
-
+          <div class="image-wrap">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXLxTkHPItg7MvwX2G0_4xi1GdbYn-glKGrAOAHjjxcw1byMx7zQ", alt="image feature coming soon">
           </div>
 
-        </div>
+          <div class="recipe-description">
+            <div class="recipe-title" id=<%= recipe.id %>><%= recipe.title %></div>
+            <div class="recipe-category"><%= recipe.category %></div>
+          </div>
+
+        <% end %>
 
       </div>
 
     </div>
 
-  </div>
+  <% end %>
 
-</section>
+</div>

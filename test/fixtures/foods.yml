@@ -2,7 +2,7 @@
 
 one:
   id: 1
-  category: Fish
+  category: Meat
   name: Salmon
   purchase_date: 2017-05-01
   expiration_date: 2017-05-01
@@ -47,7 +47,7 @@ five:
 
 six:
   id: 6
-  category: Beans
+  category: Meat
   name: Tofu
   purchase_date: 2017-05-01
   expiration_date: 2017-05-01

@@ -37,10 +37,10 @@ class FoodTest < ActiveSupport::TestCase
     assert_not @food.valid?
   end
 
-  test "category should not be more than 50" do
-    @food.category = 'a' * 51
-    assert_not @food.valid?
-  end
+  # test "category should not be more than 50" do
+  #   @food.category = 'a' * 51
+  #   assert_not @food.valid?
+  # end
 
   test "name should not be more than 50" do
     @food.name = 'a' * 51

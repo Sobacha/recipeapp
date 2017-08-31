@@ -1,0 +1,53 @@
+<div class="row foods-wrap">
+
+  <% if !object.nil? %>
+
+    <% object.each do |food| %>
+
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+
+        <ul class="food-description">
+          <div class="food-text-info">
+            <li class="food-name" id=<%= food.id %>><%= food.name %></li>
+            <li class="food-quantity">
+              <% if !food.quantity.nil? %>
+                <%= food.quantity %>
+              <% else %>
+                &nbsp;
+              <% end %>
+            </li>
+            <li class="food-expiration">exp. <%= food.expiration_date %></li>
+          </div>
+
+          <div class="food-icon-panel">
+            <li>
+              <% if possible_recipe(food) %>
+                <%= link_to controller: 'recipes', action: 'search', id: food.id, name: food.name do %>
+                  <span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
+                <% end %>
+              <% else %>
+                <span class="glyphicon glyphicon-inbox" aria-hidden="true"></span>
+              <% end %>
+
+              &nbsp;&nbsp;
+
+              <%= link_to edit_food_path(food) do %>
+                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+              <% end %>
+
+              &nbsp;&nbsp;
+
+              <%= link_to food_path(food), method: :delete, data: { confirm: 'Are you sure?' } do %>
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+              <% end %>
+            </li>
+          </div>
+        </ul>
+
+      </div>
+
+    <% end %>
+
+  <% end %>
+
+</div>
