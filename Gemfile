@@ -5,7 +5,6 @@ source 'https://rubygems.org'
 gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
 gem 'bcrypt', '3.1.11'
 gem 'bootstrap-sass', '3.3.7'
-# gem 'bootstrap', '~> 4.0.0.beta'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 # Use Puma as the app server
@@ -34,6 +33,8 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 gem 'rails-controller-testing'
+# Validates URL(https://github.com/perfectline/validates_url)
+gem "validate_url"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

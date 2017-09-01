@@ -9,7 +9,7 @@ class RecipeTest < ActiveSupport::TestCase
                          title: "Mabo Tofu",
                          ingredients: "Tofu, Pork, Salt, Pepper, Starch",
                          direction: "1, Stir fry pork. 2, Put the rest of ingredients. 3, Simmer for 15 minutes.",
-                         url: "google.com",
+                         url: "http://www.example.com",
                          user_id: @user.id)
   end
 
@@ -44,6 +44,27 @@ class RecipeTest < ActiveSupport::TestCase
 
   test "title should not be more than 50" do
     @recipe.title = 'a' * 51
+    assert_not @recipe.valid?
+  end
+
+  test "url should be valid" do
+    @recipe.url = "example.com"
+    assert_not @recipe.valid?
+
+    # special characters like space, '&' need to be encoded
+    @recipe.url = "http://www.example.com/space%20here.html"
+    assert @recipe.valid?
+    @recipe.url = "http://www.example.com/ here.html"
+    assert @recipe.valid?
+    @recipe.url = "http://www.example.com/and%26here.html"
+    assert @recipe.valid?
+    @recipe.url = "http://www.example.com/&here.html"
+    assert @recipe.valid?
+
+    @recipe.url = "www.example.com/and%26here.html"
+    assert_not @recipe.valid?
+
+    @recipe.url = "http:www.example.com"
     assert_not @recipe.valid?
   end
 

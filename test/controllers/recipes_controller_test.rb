@@ -54,7 +54,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                            title: "    ",
                                            ingredients: "Tofu, Onion, Salt, Pepper",
                                            direction: "1, Cut tofu and onion. 2, Stir fry. 3, Put salt and pepper for taste.",
-                                           url: "google.com",
+                                           url: "https://www.example.com/",
                                            user_id: @authorized_user.id } }
     follow_redirect!
     assert login_error_msg
@@ -70,7 +70,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                              title: "",
                                              ingredients: "Tofu, Onion, Salt, Pepper",
                                              direction: "1, Cut tofu and onion. 2, Stir fry. 3, Put salt and pepper for taste.",
-                                             url: "google.com",
+                                             url: "https://www.example.com/",
                                              user_id: @authorized_user.id } }
     end
     assert_template 'recipes/new'
@@ -88,7 +88,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                              title: "    ",
                                              ingredients: "Tofu, Onion, Salt, Pepper",
                                              direction: "1, Cut tofu and onion. 2, Stir fry. 3, Put salt and pepper for taste.",
-                                             url: "google.com",
+                                             url: "https://www.https://www.example.com//",
                                              user_id: @authorized_user.id } }
     end
     assert_template 'recipes/new'
@@ -106,7 +106,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                              title: 'a'*51,
                                              ingredients: "Tofu, Onion, Salt, Pepper",
                                              direction: "1, Cut tofu and onion. 2, Stir fry. 3, Put salt and pepper for taste.",
-                                             url: "google.com",
+                                             url: "https://www.example.com/",
                                              user_id: @authorized_user.id } }
     end
     assert_template 'recipes/new'
@@ -124,7 +124,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                              title: "Fried rice",
                                              ingredients: "Cooked rice, Onion, Egg, Carrot, Salt, Pepper",
                                              direction: "1, Cut onion and carrot. 2, Stir fry. Add egg. 3, Put salt and pepper for taste.",
-                                             url: "google.com",
+                                             url: "https://www.example.com/",
                                              user_id: @authorized_user.id } }
     end
     assert_template 'recipes/new'
@@ -152,6 +152,44 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     assert_select "div.alert ul li#1", text: "Title is too long (maximum is 50 characters)"
   end
 
+  test "invalid url can't be saved" do
+    assert log_in(@authorized_user)
+
+    get recipes_path
+    get new_recipe_path
+    assert_no_difference 'Recipe.count' do
+      post recipes_path, params: { recipe: { category: "Tofu",
+                                             title: "Tofu and onion",
+                                             ingredients: "Tofu, Onion, Salt, Pepper",
+                                             direction: "1, Cut tofu and onion. 2, Stir fry. 3, Put salt and pepper for taste.",
+                                             url: "https:www.example.com/",
+                                             user_id: @authorized_user.id } }
+    end
+    assert_template 'recipes/new'
+    assert_select "div.alert div", text: "The form contains 1 error."
+    assert_select "div.alert ul li#0", text: "Url is not a valid URL"
+  end
+
+  test "empty title/too long category/invalid url can't be saved" do
+    assert log_in(@authorized_user)
+
+    get recipes_path
+    get new_recipe_path
+    assert_no_difference 'Recipe.count' do
+      post recipes_path, params: { recipe: { category: 'a'*51,
+                                             title: "",
+                                             ingredients: "Tofu, Onion, Salt, Pepper",
+                                             direction: "1, Cut tofu and onion. 2, Stir fry. 3, Put salt and pepper for taste.",
+                                             url: "www.example.com/",
+                                             user_id: @authorized_user.id } }
+    end
+    assert_template 'recipes/new'
+    assert_select "div.alert div", text: "The form contains 3 errors."
+    assert_select "div.alert ul li#0", text: "Category is too long (maximum is 50 characters)"
+    assert_select "div.alert ul li#1", text: "Title can't be blank"
+    assert_select "div.alert ul li#2", text: "Url is not a valid URL"
+  end
+
   test "valid new recipe" do
     assert log_in(@authorized_user)
 
@@ -162,7 +200,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                              title: "Tofu and onion",
                                              ingredients: "Tofu, Onion, Salt, Pepper",
                                              direction: "1, Cut tofu and onion. 2, Stir fry. 3, Put salt and pepper for taste.",
-                                             url: "google.com",
+                                             url: "https://www.example.com/",
                                              user_id: @authorized_user.id } }
     end
     follow_redirect!
@@ -294,6 +332,23 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     assert_select "div.alert div", text: "The form contains 2 errors."
     assert_select "div.alert ul li#0", text: "Category is too long (maximum is 50 characters)"
     assert_select "div.alert ul li#1", text: "Title is too long (maximum is 50 characters)"
+  end
+
+  test "url can't be modified to invalid url" do
+    assert log_in(@authorized_user)
+
+    get recipes_path
+    get edit_recipe_path(@recipe)
+    # how to test text field is prefilled?
+    patch recipe_path(@recipe), params: { recipe: { category: 'a'*50,
+                                                    title: 'b'*50,
+                                                    ingredients: @recipe.ingredients,
+                                                    direction: @recipe.direction,
+                                                    url: "example.com/ home.html",
+                                                    user_id: @recipe.user_id } }
+    assert_template 'edit'
+    assert_select "div.alert div", text: "The form contains 1 error."
+    assert_select "div.alert ul li#0", text: "Url is not a valid URL"
   end
 
   test "valid edit recipe" do

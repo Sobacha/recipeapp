@@ -11,7 +11,7 @@
     <li role="presentation" class="active"><a href="#everything" aria-controls="everything" role="tab" data-toggle="tab">Everything</a></li>
     <li role="presentation"><a href="#grain" aria-controls="grain" role="tab" data-toggle="tab">Grain</a></li>
     <li role="presentation"><a href="#meat" aria-controls="meat" role="tab" data-toggle="tab">Meat</a></li>
-    <li role="presentation"><a href="#fat" aria-controls="fat" role="tab" data-toggle="tab">Fat</a></li>
+    <li role="presentation"><a href="#dairy" aria-controls="dairy" role="tab" data-toggle="tab">Dairy</a></li>
     <li role="presentation"><a href="#vegetable" aria-controls="vegetable" role="tab" data-toggle="tab">Vegetable</a></li>
     <li role="presentation"><a href="#fruit" aria-controls="fruit" role="tab" data-toggle="tab">Fruit</a></li>
     <li role="presentation"><a href="#other" aria-controls="other" role="tab" data-toggle="tab">Other</a></li>
@@ -28,8 +28,8 @@
     <div role="tabpanel" class="tab-pane" id="meat">
       <%= render 'category', object: @meat_ordered_by_expiration, category: 'MEAT' %>
     </div>
-    <div role="tabpanel" class="tab-pane" id="fat">
-      <%= render 'category', object: @fat_ordered_by_expiration, category: 'FAT' %>
+    <div role="tabpanel" class="tab-pane" id="dairy">
+      <%= render 'category', object: @dairy_ordered_by_expiration, category: 'FAT' %>
     </div>
     <div role="tabpanel" class="tab-pane" id="vegetable">
       <%= render 'category', object: @vegetable_ordered_by_expiration, category: 'VEGETABLE' %>

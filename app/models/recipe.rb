@@ -7,5 +7,7 @@ class Recipe < ApplicationRecord
   validates :user_id, presence: true
 
   # validates :url
+  # standard validation
+  validates :url, :url => {:allow_blank => true}
 
 end
