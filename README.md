@@ -9,9 +9,8 @@ This is my first app project with Ruby on Rails mainly to practice.
 It has two basic features.
 
 1. To organize recipes. You can save/edit/delete recipes.
-To organize food mainly to prevent food to be expired.
 
-2. You can add/edit/delete food. It shows food list by category in ascending order of expiration date.
+2. To organize food mainly to prevent food to be expired. You can add/edit/delete food. It shows food list by category in ascending order of expiration date.
 It also has an icon to show saved recipes that use food in your list if any.
 
 ### How to use
