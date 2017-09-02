@@ -1,24 +1,27 @@
-# README
+# Recipe app
+[Rails 5.0.2]
+[Ruby 2.2.3]
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+---
 
-Things you may want to cover:
+This is my first app project with Ruby on Rails mainly to practice.
 
-* Ruby version
+It has two basic features.
 
-* System dependencies
+1. To organize recipes. You can save/edit/delete recipes.
+To organize food mainly to prevent food to be expired.
 
-* Configuration
+2. You can add/edit/delete food. It shows food list by category in ascending order of expiration date.
+It also has an icon to show saved recipes that use food in your list if any.
 
-* Database creation
+### How to use
 
-* Database initialization
+---
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```bash
+git clone git@github.com:Sobacha/recipeapp.git
+cd recipeapp
+bundle install
+rake db:migrate
+rails server
+```

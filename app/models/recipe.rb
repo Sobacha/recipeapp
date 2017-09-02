@@ -8,6 +8,6 @@ class Recipe < ApplicationRecord
 
   # validates :url
   # standard validation
-  validates :url, :url => {:allow_blank => true}
+  validates :url, :url => {:allow_nil => true, :allow_blank => true}
 
 end
