@@ -5,19 +5,40 @@
 <h3>WELCOME</h3>
 
 <h2>
-  This app is to organize your recipes and food in your fridge.
-  <br></br><br></br>
-  Look at the icons on upper right.
-  <br></br>
-  <ul>
-    <li>Your account, click
-      <span class="glyphicon glyphicon-user" aria-hidden="true"></span>.
-    </li>
-    <li>Your recipe, click
-      <span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>.
-    </li>
-    <li>Your food, click
-      <span class="glyphicon glyphicon-apple" aria-hidden="true"></span>.
-    </li>
-  </ul>
+
+  <% if logged_in? %>
+    Let's start.
+    <br></br><br></br>
+    Look at the icons on upper right.
+    <br></br>
+
+    <ul>
+      <li>Your account, click
+        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>.
+      </li>
+      <li>Your recipe, click
+        <span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>.
+      </li>
+      <li>Your food, click
+        <span class="glyphicon glyphicon-apple" aria-hidden="true"></span>.
+      </li>
+    </ul>
+
+  <% else %>
+    This app is to organize your recipes and food in your fridge.
+    Let's start.
+    <br></br><br></br>
+    Look at the icons on upper right.
+    <br></br>
+
+    <ul>
+      <li>To log in, click
+        <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>.
+      </li>
+      <li>To sign up, click
+        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>.
+      </li>
+    </ul>
+
+  <% end %>
 </h2>
