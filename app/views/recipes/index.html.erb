@@ -15,8 +15,9 @@
         <%= link_to(recipe) do %>
 
           <div class="image-wrap">
-            <img src="", alt="image feature coming soon">
+            <img src="<%= recipe.recipe_image %>", alt="You can add image at edit page.">
           </div>
+
 
           <div class="recipe-description">
             <div class="recipe-title"><%= recipe.title %></div>

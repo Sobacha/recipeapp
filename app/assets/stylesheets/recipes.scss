@@ -75,3 +75,25 @@
       }
   }
 }
+
+.img-box {
+  margin: 0 0 $margin*3 0;
+
+  .img-wrap {
+    position:relative;
+    overflow:hidden;
+    padding-bottom:45%;
+
+      img {
+        width: 65%;
+        overflow: hidden;
+        position: absolute;
+
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+      }
+  }
+}

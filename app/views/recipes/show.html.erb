@@ -1,5 +1,9 @@
 <!-- <body> in layouts/application.html.erb -->
-<div>(image feature coming soon)</div>
+<div class="img-box">
+  <div class="img-wrap">
+    <img src="<%= @recipe.recipe_image %>", alt="You can add image at edit page.">
+  </div>
+</div>
 
 <div class="recipe-head">
   <font class="recipe-title"><%= @recipe.title %></font>
