@@ -18,9 +18,10 @@ ActiveRecord::Schema.define(version: 20170908164605) do
     t.date     "purchase_date"
     t.date     "expiration_date"
     t.integer  "quantity"
+    t.integer  "user_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
-    t.integer  "user_id"
+    t.index ["user_id"], name: "index_foods_on_user_id"
   end
 
   create_table "recipes", force: :cascade do |t|
@@ -29,10 +30,11 @@ ActiveRecord::Schema.define(version: 20170908164605) do
     t.text     "ingredients"
     t.text     "direction"
     t.text     "url"
+    t.integer  "user_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
-    t.integer  "user_id"
     t.text     "recipe_image"
+    t.index ["user_id"], name: "index_recipes_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

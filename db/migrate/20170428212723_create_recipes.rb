@@ -1,7 +1,6 @@
 class CreateRecipes < ActiveRecord::Migration[5.0]
   def change
     create_table :recipes do |t|
-
       t.string :category
       t.string :title
       t.text :ingredients
@@ -11,6 +10,6 @@ class CreateRecipes < ActiveRecord::Migration[5.0]
 
       t.timestamps
     end
-    add_index :recipes, [:user_id, :created_at]
+    # add_index :recipes, [:user_id, :created_at]
   end
 end
