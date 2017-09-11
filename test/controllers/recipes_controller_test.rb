@@ -35,7 +35,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "user can't see other users' recipes" do
-    assert log_in(@non_autho_user)
+    assert log_in(@unauthorized_user)
 
     get recipe_path(@recipe)
     follow_redirect!
@@ -135,6 +135,43 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     assert_select "div.alert ul li#0", text: "Category is too long (maximum is 50 characters)"
   end
 
+  test "invalid url can't be saved" do
+    assert log_in(@authorized_user)
+
+    get recipes_path
+    get new_recipe_path
+    assert_no_difference 'Recipe.count' do
+      post recipes_path, params: { recipe: { category: "Tofu",
+                                             title: "Tofu and onion",
+                                             ingredients: "Tofu, Onion, Salt, Pepper",
+                                             direction: "1, Cut tofu and onion. 2, Stir fry. 3, Put salt and pepper for taste.",
+                                             url: "https://www.example com/",
+                                             user_id: @authorized_user.id } }
+    end
+    assert_template 'recipes/new'
+    assert_select "div.alert div", text: "The form contains 1 error."
+    assert_select "div.alert ul li#0", text: "Url is not a valid URL"
+  end
+
+  test "invalid recipe_image can't be saved" do
+    assert log_in(@authorized_user)
+
+    get recipes_path
+    get new_recipe_path
+    assert_no_difference 'Recipe.count' do
+      post recipes_path, params: { recipe: { category: "Tofu",
+                                             title: "Tofu and onion",
+                                             ingredients: "Tofu, Onion, Salt, Pepper",
+                                             direction: "1, Cut tofu and onion. 2, Stir fry. 3, Put salt and pepper for taste.",
+                                             url: "https://www.example.com/",
+                                             recipe_image: "http://www.sirogohan com/_files/recipe/images/agedasi/agedasiyoko.JPG",
+                                             user_id: @authorized_user.id } }
+    end
+    assert_template 'recipes/new'
+    assert_select "div.alert div", text: "The form contains 1 error."
+    assert_select "div.alert ul li#0", text: "Recipe_image is not a valid URL"
+  end
+
   test "both title and category are too long to be saved" do
     assert log_in(@authorized_user)
 
@@ -155,42 +192,6 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
     assert_select "div.alert ul li#1", text: "Title is too long (maximum is 50 characters)"
   end
 
-  # test "invalid url can't be saved" do
-  #   assert log_in(@authorized_user)
-  #
-  #   get recipes_path
-  #   get new_recipe_path
-  #   assert_no_difference 'Recipe.count' do
-  #     post recipes_path, params: { recipe: { category: "Tofu",
-  #                                            title: "Tofu and onion",
-  #                                            ingredients: "Tofu, Onion, Salt, Pepper",
-  #                                            direction: "1, Cut tofu and onion. 2, Stir fry. 3, Put salt and pepper for taste.",
-  #                                            url: "https:www.example.com/",
-  #                                            user_id: @authorized_user.id } }
-  #   end
-  #   assert_template 'recipes/new'
-  #   assert_select "div.alert div", text: "The form contains 1 error."
-  #   assert_select "div.alert ul li#0", text: "Url is not a valid URL"
-  # end
-
-  # test "invalid recipe_image can't be saved" do
-  #   assert log_in(@authorized_user)
-  #
-  #   get recipes_path
-  #   get new_recipe_path
-  #   assert_no_difference 'Recipe.count' do
-  #     post recipes_path, params: { recipe: { category: "Tofu",
-  #                                            title: "Tofu and onion",
-  #                                            ingredients: "Tofu, Onion, Salt, Pepper",
-  #                                            direction: "1, Cut tofu and onion. 2, Stir fry. 3, Put salt and pepper for taste.",
-  #                                            url: "https://www.example.com/",
-  #                                            recipe_image: "http://www.sirogohan.com/_files/recipe/images/agedasi/a gedasiyoko.JPG",
-  #                                            user_id: @authorized_user.id } }
-  #   end
-  #   assert_template 'recipes/new'
-  #   assert_select "div.alert div", text: "The form contains 1 error."
-  #   assert_select "div.alert ul li#0", text: "Recipe_image is not a valid URL"
-  # end
 
   # test "empty title/too long category/invalid url can't be saved" do
   #   assert log_in(@authorized_user)
@@ -249,7 +250,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "user can't access edit_recipe_path for other users' recipes" do
-    assert log_in(@non_autho_user)
+    assert log_in(@unauthorized_user)
 
     get edit_recipe_path(@recipe)
     follow_redirect!
@@ -258,7 +259,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
 
   # Is this necessary?
   test "user can't send patch for other users' recipes" do
-    assert log_in(@non_autho_user)
+    assert log_in(@unauthorized_user)
 
     patch recipe_path(@recipe), params: { recipe: { category: @recipe.category,
                                                     title: "",
@@ -399,7 +400,7 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "user can't delete other users' recipe - from the recipe index view" do
-    assert log_in(@non_autho_user)
+    assert log_in(@unauthorized_user)
 
     get recipes_path
     # how to test pop-up confirmation msg?

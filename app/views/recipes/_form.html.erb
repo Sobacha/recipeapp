@@ -7,14 +7,6 @@
 
   <div class="new-recipe-form">
 
-    <!-- image -->
-    <div class="form-group">
-      <%= f.label :recipe_image,'image(location url)', class: "col-sm-2 control-label" %>
-      <div class="col-sm-10">
-        <%= f.url_field :recipe_image, class: "form-control" %>
-      </div>
-    </div>
-
     <!-- category -->
     <div class="form-group">
       <%= f.label :category, class: "col-sm-2 control-label" %>
@@ -52,6 +44,14 @@
       <%= f.label :url, 'reference(url)', class: "col-sm-2 control-label" %>
       <div class="col-sm-10">
         <%= f.url_field :url, class: "form-control" %>
+      </div>
+    </div>
+
+    <!-- image -->
+    <div class="form-group">
+      <%= f.label :recipe_image,'image(location url)', class: "col-sm-2 control-label" %>
+      <div class="col-sm-10">
+        <%= f.url_field :recipe_image, class: "form-control" %>
       </div>
     </div>
 

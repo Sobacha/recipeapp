@@ -164,7 +164,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "user can't access edit_food_path of other users' food" do
-    assert log_in(@non_autho_user)
+    assert log_in(@unauthorized_user)
 
     get foods_path
     get edit_food_path(@food)
@@ -174,7 +174,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "user can't send patch for other users' food" do
-    assert log_in(@non_autho_user)
+    assert log_in(@unauthorized_user)
 
     patch food_path(@food), params: { food: { category: @food.category,
                                               name: "Berry",
@@ -293,7 +293,7 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "user can't delete other users' food" do
-    assert log_in(@non_autho_user)
+    assert log_in(@unauthorized_user)
 
     assert_no_difference 'Food.count' do
       delete food_path(@food)

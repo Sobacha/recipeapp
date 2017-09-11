@@ -10,7 +10,7 @@ class ActiveSupport::TestCase
   # Returns true if a test user is logged in.
   def setup
     @authorized_user = users(:one)
-    @non_autho_user = users(:two)
+    @unauthorized_user = users(:two)
     @recipe = recipes(:two)
     @food = foods(:two)
   end

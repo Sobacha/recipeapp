@@ -39,7 +39,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "user can't see other users' profile" do
-    assert log_in(@non_autho_user)
+    assert log_in(@unauthorized_user)
 
     get user_path(@authorized_user)
     follow_redirect!
@@ -47,7 +47,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "user can't delete other users" do
-    assert log_in(@non_autho_user)
+    assert log_in(@unauthorized_user)
 
     delete user_path(@authorized_user)
     follow_redirect!

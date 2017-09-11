@@ -2,18 +2,6 @@ require 'test_helper'
 
 class RecipeTest < ActiveSupport::TestCase
 
-  def setup
-    @user = users(:one)
-    # This code is not idiomatically correct.
-    @recipe = Recipe.new(category: "Main",
-                         title: "Mabo Tofu",
-                         ingredients: "Tofu, Pork, Salt, Pepper, Starch",
-                         direction: "1, Stir fry pork. 2, Put the rest of ingredients. 3, Simmer for 15 minutes.",
-                         url: "http://www.example.com",
-                         user_id: @user.id,
-                         recipe_image: "http://www.sirogohan.com/_files/recipe/images/sanma/sanmayoko.JPG" )
-  end
-
   test "should be valid" do
     assert @recipe.valid?
   end
@@ -48,46 +36,50 @@ class RecipeTest < ActiveSupport::TestCase
     assert_not @recipe.valid?
   end
 
-  # test "url should be valid" do
-  #   @recipe.url = "example.com"
-  #   assert_not @recipe.valid?
-  #
-  #   # special characters like space, '&' need to be encoded
-  #   @recipe.url = "http://www.example.com/space%20here.html"
-  #   assert @recipe.valid?
-  #   @recipe.url = "http://www.example.com/ here.html"
-  #   assert_not @recipe.valid?
-  #   @recipe.url = "http://www.example.com/and%26here.html"
-  #   assert @recipe.valid?
-  #   @recipe.url = "http://www.example.com/&here.html"
-  #   assert_not @recipe.valid?
-  #
-  #   @recipe.url = "www.example.com/and%26here.html"
-  #   assert_not @recipe.valid?
-  #
-  #   @recipe.url = "http:www.example.com"
-  #   assert_not @recipe.valid?
-  # end
-  #
-  # test "recipe_image should be valid" do
-  #   @recipe.recipe_image = "example.com"
-  #   assert_not @recipe.valid?
-  #
-  #   # special characters like space, '&' need to be encoded
-  #   @recipe.recipe_image = "http://www.example.com/space%20here.html"
-  #   assert @recipe.valid?
-  #   @recipe.recipe_image = "http://www.example.com/ here.html"
-  #   assert_not @recipe.valid?
-  #   @recipe.recipe_image = "http://www.example.com/and%26here.html"
-  #   assert @recipe.valid?
-  #   @recipe.recipe_image = "http://www.example.com/&here.html"
-  #   assert_not @recipe.valid?
-  #
-  #   @recipe.recipe_image = "www.example.com/and%26here.html"
-  #   assert_not @recipe.valid?
-  #
-  #   @recipe.recipe_image = "http:www.example.com"
-  #   assert_not @recipe.valid?
-  # end
+  test "url should be valid" do
+    @recipe.url = "example.com"
+    assert_not @recipe.valid?
+
+    @recipe.url = "www.example.com"
+    assert_not @recipe.valid?
+
+    @recipe.url = "http:www.example.com"
+    assert_not @recipe.valid?
+
+    @recipe.url = "https:www.example.com"
+    assert_not @recipe.valid?
+
+    @recipe.url = "http://www.example.com"
+    assert @recipe.valid?
+
+    @recipe.url = "https://www.example.com"
+    assert @recipe.valid?
+
+    @recipe.url = "ftp://www.example.com"
+    assert_not @recipe.valid?
+  end
+
+  test "recipe_image should be valid" do
+    @recipe.recipe_image = "example.com"
+    assert_not @recipe.valid?
+
+    @recipe.recipe_image = "www.example.com"
+    assert_not @recipe.valid?
+
+    @recipe.recipe_image = "http:www.example.com"
+    assert_not @recipe.valid?
+
+    @recipe.recipe_image = "https:www.example.com"
+    assert_not @recipe.valid?
+
+    @recipe.recipe_image = "http://www.example.com"
+    assert @recipe.valid?
+
+    @recipe.recipe_image = "https://www.example.com"
+    assert @recipe.valid?
+
+    @recipe.recipe_image = "ftp://www.example.com"
+    assert_not @recipe.valid?
+  end
 
 end

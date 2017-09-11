@@ -4,7 +4,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
 
   def setup
     @user = users(:one)
-    @non_autho_user = users(:two)
+    @unauthorized_user = users(:two)
   end
 
   test "user must log in to edit" do
@@ -25,7 +25,7 @@ class UsersEditTest < ActionDispatch::IntegrationTest
 
   test "non-authorized user can't edit other users' info" do
     get login_path
-    post login_path, params: { session: { email: @non_autho_user.email,
+    post login_path, params: { session: { email: @unauthorized_user.email,
                                           password: 'password' } }
     assert is_logged_in?
 
