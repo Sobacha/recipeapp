@@ -17,12 +17,28 @@
   text-transform: lowercase;
   font-family: $classic-font;
 }
+.expire-today{
+  color: $white !important;
+  background-color: #CD5C5C !important;
+}
+.expire-tomorrow{
+  color: $white !important;
+  background-color: #E9967A !important;
+}
+.expired{
+  color: $white !important;
+  background-color: $mediumgrey !important;
+}
 .food-description {
   list-style: none;
   background-color: $white;
   text-align: center;
   padding: 0;
   // overflow: hidden;
+}
+
+.food_in_list {
+  font-weight: bold;
 }
 
 /*nav tab*/

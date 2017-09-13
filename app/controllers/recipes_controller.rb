@@ -9,6 +9,17 @@ class RecipesController < ApplicationController
 
   def show
     @recipe = current_user.recipes.find(params[:id])
+    @foods = current_user.foods.all
+    @ingredients = @recipe.ingredients.split("\n")
+    @ingredients_you_have = Array.new
+
+    @ingredients.each do |ingredient|
+      @foods.each do |food|
+        if ingredient.downcase.include?(food.name.downcase)
+          @ingredients_you_have.push(ingredient)
+        end
+      end
+    end
   end
 
   def new
@@ -60,7 +71,7 @@ class RecipesController < ApplicationController
 
   private
     def recipe_params
-      params.require(:recipe).permit(:category, :title, :ingredients, :direction, :url)
+      params.require(:recipe).permit(:category, :title, :ingredients, :direction, :url, :recipe_image)
     end
 
     # Confirms the correct user, shows nice error page if not

@@ -17,7 +17,13 @@
   <div class="form-group">
     <label class="col-sm-2 control-label">Ingredients</label>
     <div class="col-sm-10">
-      <%= simple_format(@recipe.ingredients, class: 'form-control-static') %>
+      <% @ingredients.each do |ingredient| %>
+        <% if @ingredients_you_have.include?(ingredient) %>
+          <p class="form-control-static food_in_list"><%= ingredient %></p>
+        <% else %>
+          <p class="form-control-static"><%= ingredient %></p>
+        <% end %>
+      <% end %>
     </div>
   </div>
 

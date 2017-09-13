@@ -16,7 +16,16 @@
                 &nbsp;
               <% end %>
             </li>
-            <li class="food-expiration">exp. <%= food.expiration_date %></li>
+
+            <% if @current_date == food.expiration_date %>
+              <li class="food-expiration expire-today">expires today!</li>
+            <% elsif food.expiration_date == @current_date + 1  %>
+              <li class="food-expiration expire-tomorrow">expires tomorrow</li>
+            <% elsif @current_date > food.expiration_date %>
+              <li class="food-expiration expired">expired on <%= food.expiration_date %></li>
+            <% else%>
+              <li class="food-expiration">expires <%= food.expiration_date %></li>
+            <% end %>
           </div>
 
           <div class="food-icon-panel">

@@ -1,3 +1,5 @@
+require 'date'
+
 class FoodsController < ApplicationController
   before_action :logged_in_user
   before_action :correct_user, only:[:edit, :update, :destroy]
@@ -11,6 +13,7 @@ class FoodsController < ApplicationController
     @vegetable_ordered_by_expiration = current_user.foods.where("category = ?", 'Vegetable').order("expiration_date ASC")
     @fruit_ordered_by_expiration = current_user.foods.where("category = ?", 'Fruit').order("expiration_date ASC")
     @other_ordered_by_expiration = current_user.foods.where("category = ?", 'Other').order("expiration_date ASC")
+    @current_date = Date.current
   end
 
   def new

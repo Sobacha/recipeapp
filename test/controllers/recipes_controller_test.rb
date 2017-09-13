@@ -163,13 +163,12 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
                                              title: "Tofu and onion",
                                              ingredients: "Tofu, Onion, Salt, Pepper",
                                              direction: "1, Cut tofu and onion. 2, Stir fry. 3, Put salt and pepper for taste.",
-                                             url: "https://www.example.com/",
-                                             recipe_image: "http://www.sirogohan com/_files/recipe/images/agedasi/agedasiyoko.JPG",
-                                             user_id: @authorized_user.id } }
+                                             user_id: @authorized_user.id,
+                                             recipe_image: "htt://www.sirogohan＼＼com/_files/recipe/images/agedasi/agedasiyoko.JPG" } }
     end
     assert_template 'recipes/new'
     assert_select "div.alert div", text: "The form contains 1 error."
-    assert_select "div.alert ul li#0", text: "Recipe_image is not a valid URL"
+    assert_select "div.alert ul li#0", text: "Recipe image is not a valid URL"
   end
 
   test "both title and category are too long to be saved" do

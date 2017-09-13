@@ -35,8 +35,8 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     # prevent sending post directly
     post foods_path, params: { food: { category: "Fish",
                                        name: "Tuna",
-                                       purchase_date: 2017-05-01,
-                                       expiration_date: 2017-05-01,
+                                       purchase_date: "2017-05-01",
+                                       expiration_date: "2017-05-01",
                                        quantity: 1 } }
     follow_redirect!
     assert login_error_msg
@@ -50,8 +50,8 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference 'Food.count' do
       post foods_path, params: { food: { category: "Fish",
                                          name: "",
-                                         purchase_date: 2017-05-01,
-                                         expiration_date: 2017-05-01,
+                                         purchase_date: "2017-05-01",
+                                         expiration_date: "2017-05-01",
                                          quantity: 1 } }
     end
     assert_template 'foods/new'
@@ -67,8 +67,8 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference 'Food.count' do
       post foods_path, params: { food: { category: "Fish",
                                          name: "             ",
-                                         purchase_date: 2017-05-01,
-                                         expiration_date: 2017-05-01,
+                                         purchase_date: "2017-05-01",
+                                         expiration_date: "2017-05-01",
                                          quantity: 1 } }
     end
     assert_template 'foods/new'
@@ -84,51 +84,14 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference 'Food.count' do
       post foods_path, params: { food: { category: "Fish",
                                          name: 'a'*55,
-                                         purchase_date: 2017-05-01,
-                                         expiration_date: 2017-05-01,
+                                         purchase_date: "2017-05-01",
+                                         expiration_date: "2017-05-01",
                                          quantity: 1 } }
     end
     assert_template 'foods/new'
     assert_select "div.alert div", text: "The form contains 1 error."
     assert_select "div.alert ul li", text: "Name is too long (maximum is 50 characters)"
   end
-
-  # test "too long category mustn't be saved" do
-  #   assert log_in(@authorized_user)
-  #
-  #   get foods_path
-  #   get new_food_path
-  #   assert_no_difference 'Food.count' do
-  #     post foods_path, params: { food: { category: "Fish"*55,
-  #                                        name: "Salmon",
-  #                                        purchase_date: 2017-05-01,
-  #                                        expiration_date: 2017-05-01,
-  #                                        quantity: 1 } }
-  #   end
-  #   assert_template 'foods/new'
-  #   assert_select "div.alert", text: "The form contains 1 error."
-  #   assert_select "div.alert ul li", text: "Category is too long (maximum is 50 characters)"
-  # end
-
-  # test "both name and category are too long to be saved" do
-  #   assert log_in(@authorized_user)
-  #
-  #   get foods_path
-  #   get new_food_path
-  #   assert_no_difference 'Food.count' do
-  #     post foods_path, params: { food: { category: "Fish"*55,
-  #                                        name: "Salmon"*55,
-  #                                        purchase_date: 2017-05-01,
-  #                                        expiration_date: 2017-05-01,
-  #                                        quantity: 1 } }
-  #   end
-  #   assert_template 'foods/new'
-  #   assert_select "div.alert", text: "The form contains 2 errors."
-  #   assert_select "div.alert ul li" do
-  #     assert_select "li", 2
-  #     # how to test actual msg is correct?
-  #   end
-  # end
 
   test "valid new food" do
     assert log_in(@authorized_user)
@@ -138,8 +101,8 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     assert_difference 'Food.count', 1 do
       post foods_path, params: { food: { category: "Fish",
                                          name: "Tuna",
-                                         purchase_date: 2017-05-01,
-                                         expiration_date: 2017-05-01,
+                                         purchase_date: "2017-05-01",
+                                         expiration_date: "2017-05-01",
                                          quantity: 1 } }
     end
     follow_redirect!
@@ -156,8 +119,8 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     # prevent sending patch directly
     patch food_path(@food), params: { food: { category: "Fish",
                                               name: "Tuna",
-                                              purchase_date: 2017-05-01,
-                                              expiration_date: 2017-05-01,
+                                              purchase_date: "2017-05-01",
+                                              expiration_date: "2017-05-01",
                                               quantity: 1 } }
     follow_redirect!
     assert login_error_msg
@@ -178,12 +141,29 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
 
     patch food_path(@food), params: { food: { category: @food.category,
                                               name: "Berry",
-                                              purchase_date: 2017-05-01,
-                                              expiration_date: 2017-05-01,
+                                              purchase_date: "2017-05-01",
+                                              expiration_date: "2017-05-01",
                                               quantity: 1 } }
     follow_redirect!
     assert unauthorized_data_error_msg("food")
   end
+
+# #
+#   test "user can't create mew food for other users" do
+#     assert log_in(@authorized_user)
+#
+#     assert_no_difference 'Food.count' do
+#       patch food_path(@food), params: { food: { category: @food.category,
+#                                                  name: "Tuna",
+#                                                  purchase_date: "2017-05-01",
+#                                                  expiration_date: "2017-05-01",
+#                                                  quantity: 1,
+#                                                  user_id: 2 } }
+#     end
+#     follow_redirect!
+#     assert unauthorized_data_error_msg("food")
+#   end
+# #
 
   test "name mustn't be modified to empty - from the food index view" do
     assert log_in(@authorized_user)
@@ -193,8 +173,8 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     # how to test text field is prefilled?
     patch food_path(@food), params: { food: { category: @food.category,
                                               name: "",
-                                              purchase_date: 2017-05-01,
-                                              expiration_date: 2017-05-01,
+                                              purchase_date: "2017-05-01",
+                                              expiration_date: "2017-05-01",
                                               quantity: 1 } }
     assert_template 'edit'
     assert_select "div.alert div", text: "The form contains 1 error."
@@ -209,8 +189,8 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     # how to test text field is prefilled?
     patch food_path(@food), params: { food: { category: @food.category,
                                               name: "        ",
-                                              purchase_date: 2017-05-01,
-                                              expiration_date: 2017-05-01,
+                                              purchase_date: "2017-05-01",
+                                              expiration_date: "2017-05-01",
                                               quantity: 1 } }
     assert_template 'edit'
     assert_select "div.alert div", text: "The form contains 1 error."
@@ -226,48 +206,13 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     # how to test text field is prefilled?
     patch food_path(@food), params: { food: { category: @food.category,
                                               name: 'a'*51,
-                                              purchase_date: 2017-05-01,
-                                              expiration_date: 2017-05-01,
+                                              purchase_date: "2017-05-01",
+                                              expiration_date: "2017-05-01",
                                               quantity: 1 } }
     assert_template 'edit'
     assert_select "div.alert div", text: "The form contains 1 error."
     assert_select "div.alert ul li", text: "Name is too long (maximum is 50 characters)"
   end
-
-  # test "category mustn't be modified to be too long" do
-  #   assert log_in(@authorized_user)
-  #
-  #   get foods_path
-  #   get edit_food_path(@food)
-  #   # how to test text field is prefilled?
-  #   patch food_path(@food), params: { food: { category: 'a'*51,
-  #                                             name: @food.name,
-  #                                             purchase_date: 2017-05-01,
-  #                                             expiration_date: 2017-05-01,
-  #                                             quantity: 1 } }
-  #   assert_template 'edit'
-  #   assert_select "div.alert", text: "The form contains 1 error."
-  #   assert_select "div.alert ul li", text: "Category is too long (maximum is 50 characters)"
-  # end
-  #
-  # test "name mustn't be modified to empty and category mustn't be modified to be too long" do
-  #   assert log_in(@authorized_user)
-  #
-  #   get foods_path
-  #   get edit_food_path(@food)
-  #   # how to test text field is prefilled?
-  #   patch food_path(@food), params: { food: { category: 'a'*51,
-  #                                             name: "",
-  #                                             purchase_date: 2017-05-01,
-  #                                             expiration_date: 2017-05-01,
-  #                                             quantity: 1 } }
-  #   assert_template 'edit'
-  #   assert_select "div.alert", text: "The form contains 2 errors."
-  #   assert_select "div.alert ul li" do
-  #     assert_select "li", 2
-  #     # how to test actual msg is correct?
-  #   end
-  # end
 
   test "valid edit food" do
     assert log_in(@authorized_user)
@@ -277,8 +222,8 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     # how to test text field is prefilled?
     patch food_path(@food), params: { food: { category: "Fruit salad",
                                               name: "Fruit salad",
-                                              purchase_date: 2017-05-01,
-                                              expiration_date: 2017-05-01,
+                                              purchase_date: "2017-05-01",
+                                              expiration_date: "2017-05-01",
                                               quantity: 1 } }
     follow_redirect!
     assert_template 'index'
