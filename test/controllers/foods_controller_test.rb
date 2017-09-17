@@ -33,11 +33,13 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     assert login_error_msg
 
     # prevent sending post directly
-    post foods_path, params: { food: { category: "Fish",
-                                       name: "Tuna",
-                                       purchase_date: "2017-05-01",
-                                       expiration_date: "2017-05-01",
-                                       quantity: 1 } }
+    assert_no_difference 'Food.count' do
+      post foods_path, params: { food: { category: "Fish",
+                                         name: "Tuna",
+                                         purchase_date: "2017-05-01",
+                                         expiration_date: "2017-05-01",
+                                         quantity: 1 } }
+    end
     follow_redirect!
     assert login_error_msg
   end
@@ -147,23 +149,6 @@ class FoodsControllerTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert unauthorized_data_error_msg("food")
   end
-
-# #
-#   test "user can't create mew food for other users" do
-#     assert log_in(@authorized_user)
-#
-#     assert_no_difference 'Food.count' do
-#       patch food_path(@food), params: { food: { category: @food.category,
-#                                                  name: "Tuna",
-#                                                  purchase_date: "2017-05-01",
-#                                                  expiration_date: "2017-05-01",
-#                                                  quantity: 1,
-#                                                  user_id: 2 } }
-#     end
-#     follow_redirect!
-#     assert unauthorized_data_error_msg("food")
-#   end
-# #
 
   test "name mustn't be modified to empty - from the food index view" do
     assert log_in(@authorized_user)
