@@ -4,7 +4,7 @@
 
 ---
 
-This is my first app project with Ruby on Rails mainly to practice.
+This is my first app project with Ruby on Rails.
 
 It has two basic features.
 
